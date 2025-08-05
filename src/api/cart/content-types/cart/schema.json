@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "carts",
+  "info": {
+    "singularName": "cart",
+    "pluralName": "carts",
+    "displayName": "Cart",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "userId": {
+      "type": "integer"
+    },
+    "total": {
+      "type": "decimal"
+    },
+    "CartItem": {
+      "type": "component",
+      "repeatable": true,
+      "component": "cart.cart"
+    },
+    "discountCode": {
+      "type": "string"
+    },
+    "discountPrice": {
+      "type": "decimal"
+    },
+    "finalPrice": {
+      "type": "decimal"
+    }
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "kind": "collectionType",
+  "collectionName": "courses",
+  "info": {
+    "singularName": "course",
+    "pluralName": "courses",
+    "displayName": "Course",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "text",
+      "required": true
+    },
+    "shortDesc": {
+      "type": "richtext",
+      "required": true
+    },
+    "price": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "duration": {
+      "type": "decimal",
+      "required": true,
+      "min": 0
+    },
+    "startDate": {
+      "type": "datetime"
+    },
+    "endDate": {
+      "type": "datetime"
+    },
+    "videoUrl": {
+      "type": "string"
+    },
+    "venueLocation": {
+      "type": "string"
+    },
+    "webinarId": {
+      "type": "string"
+    },
+    "keywords": {
+      "type": "string"
+    },
+    "certificateTemplate": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "isFeatured": {
+      "type": "boolean",
+      "default": false
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "courses"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "order": {
+      "type": "biginteger"
+    },
+    "isActive": {
+      "type": "boolean",
+      "default": true
+    },
+    "instructors": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::instructor.instructor",
+      "inversedBy": "courses"
+    },
+    "discount": {
+      "type": "string"
+    },
+    "tabs": {
+      "displayName": "dynamicTab",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.dynamic-tab"
+    },
+    "durationUnit": {
+      "type": "enumeration",
+      "enum": [
+        "Hours",
+        "Minutes",
+        "Days"
+      ],
+      "default": "Hours"
+    },
+    "timezone": {
+      "type": "string"
+    },
+    "user_exams": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-exam.user-exam",
+      "mappedBy": "course"
+    },
+    "forTaxLaw": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "slug": {
+      "type": "text"
+    },
+    "user_courses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-course.user-course",
+      "mappedBy": "course"
+    },
+    "uuid": {
+      "type": "uid",
+      "private": true
+    },
+    "credit": {
+      "type": "string"
+    },
+    "medium": {
+      "type": "string"
+    },
+    "fieldOfStudy": {
+      "type": "string"
+    },
+    "programNumber": {
+      "type": "string"
+    },
+    "handout": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "redirection_Link": {
+      "type": "string"
+    },
+    "surveyLink": {
+      "type": "string"
+    },
+    "creditsInfo": {
+      "type": "string"
+    },
+    "packages": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::package.package",
+      "inversedBy": "courses"
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_blocks_tab_with_buttons",
+  "info": {
+    "displayName": "TabWithButton",
+    "icon": "adjust"
+  },
+  "options": {},
+  "attributes": {
+    "Button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.button"
+    },
+    "sectionTitle": {
+      "type": "string"
+    },
+    "sectionDescription": {
+      "type": "string"
+    }
+  }
+}

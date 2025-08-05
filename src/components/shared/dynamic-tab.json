@@ -1,0 +1,38 @@
+{
+  "collectionName": "components_shared_dynamic_tabs",
+  "info": {
+    "displayName": "dynamicTab",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "featureTitle": {
+      "type": "richtext"
+    },
+    "index": {
+      "type": "enumeration",
+      "enum": [
+        "Outline",
+        "Credits",
+        "GivingBack",
+        "Other"
+      ],
+      "default": "Other"
+    }
+  }
+}

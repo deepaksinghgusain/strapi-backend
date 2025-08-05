@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_global_email_templates",
+  "info": {
+    "displayName": "EmailTemplates",
+    "icon": "align-justify",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "templateName": {
+      "type": "string"
+    },
+    "subject": {
+      "type": "text",
+      "required": true
+    },
+    "template": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    }
+  }
+}

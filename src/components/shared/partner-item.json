@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_partner_items",
+  "info": {
+    "displayName": "partnerItem",
+    "icon": "angry",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "text",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

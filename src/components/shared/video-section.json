@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_shared_video_sections",
+  "info": {
+    "displayName": "VideoSection",
+    "icon": "video",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "video": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "videos"
+      ]
+    },
+    "videoText": {
+      "type": "string"
+    },
+    "videourl": {
+      "type": "text"
+    }
+  }
+}

@@ -1,0 +1,714 @@
+{
+	"info": {
+		"_postman_id": "7cb98270-8d70-45d2-91e9-a2994008d9d6",
+		"name": "Strapi Collection Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19956876"
+	},
+	"item": [
+		{
+			"name": "Landing page",
+			"item": [
+				{
+					"name": "Landing page  get all the data block",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "0feeb7f24b2f86676af6802ac1da81b70e104b6ea5ffc64c98a87a2721c7f2475639559fa1a5b4f5e700b5d64bff62713dd9219273aa90020264fe528beb089533bd148470bf5bad0b7fa8636d62b287f1638ab06502aa8fd3483d0852a52a08e4b0630d31aa7c251193d8f5a2e3da8f4ba489caf18524f85de30e6fee7a4610",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/landingpage?populate=deep",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"landingpage"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "deep"
+								}
+							]
+						},
+						"description": "this api will give you the Home page data\n\nHome page contain:-\n\n1.  CPE WAS NEVER THIS EASY\n    \n\ncomponent name =\n\nblocks.page-highlight-simple\n\nEndFragment\n\n2\\. TESTIMONIALS\n\ncomponent name = blocks.testimonial\n\n3\\. HOW DOES IT WORK\n\ncomponent name = blocks.feature-image-bullet-list\n\nEndFragment\n\n4\\. WE ARE PROFESSIONALS\n\nEndFragment\n\ncomponent name = blocks.page-highlight-with-image-bulleted-text\n\nEndFragment\n\n5\\. CPE WARE HOUSE\n\ncomponent name = blocks.hero-with-social-links\n\nEndFragment\n\n6\\. OUR ACCREDIATION PARTNER\n\ncomponent name =blocks.partner-section\n\nEndFragment\n\n7\\. LATEST BUSSINESS NEWS\n\ncomponent name = blocks.latest-news\n\nEndFragment\n\nEndFragment"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Courses",
+			"item": [
+				{
+					"name": "Courses Api",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "0feeb7f24b2f86676af6802ac1da81b70e104b6ea5ffc64c98a87a2721c7f2475639559fa1a5b4f5e700b5d64bff62713dd9219273aa90020264fe528beb089533bd148470bf5bad0b7fa8636d62b287f1638ab06502aa8fd3483d0852a52a08e4b0630d31aa7c251193d8f5a2e3da8f4ba489caf18524f85de30e6fee7a4610",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/courses?populate=*",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"courses"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "*"
+								}
+							]
+						},
+						"description": "this is the course api you can fetch all the details of courses\n\nall the data of courses will be found in\n\ndata>>attributes"
+					},
+					"response": []
+				},
+				{
+					"name": "Coureses Search api",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/courses?populate=*&filters[title][$containsi]=\"YOUR SEARCH KEYWORDS\"",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"courses"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "*"
+								},
+								{
+									"key": "filters[title][$containsi]",
+									"value": "\"YOUR SEARCH KEYWORDS\""
+								}
+							]
+						},
+						"description": "this is the search api for courses , you can search via keywords , the response will be based title of courses"
+					},
+					"response": []
+				},
+				{
+					"name": "single course",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "0feeb7f24b2f86676af6802ac1da81b70e104b6ea5ffc64c98a87a2721c7f2475639559fa1a5b4f5e700b5d64bff62713dd9219273aa90020264fe528beb089533bd148470bf5bad0b7fa8636d62b287f1638ab06502aa8fd3483d0852a52a08e4b0630d31aa7c251193d8f5a2e3da8f4ba489caf18524f85de30e6fee7a4610",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/courses/2?populate=*",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"courses",
+								"2"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "*"
+								}
+							]
+						},
+						"description": "this api gives the data of single course\n\nyou can find the single course by giving ID\n\nStartFragment\n\n[https://asteridadminqa.essentialdemo.com/api/courses/CourseID](https://asteridadminqa.essentialdemo.com/api/courses/CourseID) ?populate=*\n\nEndFragment"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Instructors",
+			"item": [
+				{
+					"name": "instructor api",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "0feeb7f24b2f86676af6802ac1da81b70e104b6ea5ffc64c98a87a2721c7f2475639559fa1a5b4f5e700b5d64bff62713dd9219273aa90020264fe528beb089533bd148470bf5bad0b7fa8636d62b287f1638ab06502aa8fd3483d0852a52a08e4b0630d31aa7c251193d8f5a2e3da8f4ba489caf18524f85de30e6fee7a4610",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/instructors?populate=*",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"instructors"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "*"
+								}
+							]
+						},
+						"description": "this is doc for instructor api , you can find all the data of instructor in this ,\n\nthis api has courses related to particular instructor ,\n\nand image of instructor ,\n\nyou can find all the data in json response\n\ndata>>attributes"
+					},
+					"response": []
+				},
+				{
+					"name": "single instructor",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "0feeb7f24b2f86676af6802ac1da81b70e104b6ea5ffc64c98a87a2721c7f2475639559fa1a5b4f5e700b5d64bff62713dd9219273aa90020264fe528beb089533bd148470bf5bad0b7fa8636d62b287f1638ab06502aa8fd3483d0852a52a08e4b0630d31aa7c251193d8f5a2e3da8f4ba489caf18524f85de30e6fee7a4610",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/instructors/2?populate=*",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"instructors",
+								"2"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "*"
+								}
+							]
+						},
+						"description": "this api gives the data of single instructor\n\nStartFragment\n\nhttps://asteridadminqa.essentialdemo.com/api/instructors/instructorId\n\nEndFragment"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "global",
+			"item": [
+				{
+					"name": "header and footer",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "0feeb7f24b2f86676af6802ac1da81b70e104b6ea5ffc64c98a87a2721c7f2475639559fa1a5b4f5e700b5d64bff62713dd9219273aa90020264fe528beb089533bd148470bf5bad0b7fa8636d62b287f1638ab06502aa8fd3483d0852a52a08e4b0630d31aa7c251193d8f5a2e3da8f4ba489caf18524f85de30e6fee7a4610",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/global?populate=deep",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"global"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "deep"
+								}
+							]
+						},
+						"description": "In this api you will find all the data of Header and Footer and homeLink\n\nit has 3 section\n\n1.  Headear :- all the links of header section will be found from data>> attributes>> navigation>> navlinks ,\n2.  Header section Home Link :-- Home Link can be found from data>>attributes>>homeLink\n    \n\n3.Footer :- all the data of footer section can be found from data>>attributes>>footer\n\nFooter section has 3 property\n\n1.logo- footer logo\n\n2.footerLinks - links of footer\n\n3.Offices - all the offices"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pages",
+			"item": [
+				{
+					"name": "instructor listing page",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "0feeb7f24b2f86676af6802ac1da81b70e104b6ea5ffc64c98a87a2721c7f2475639559fa1a5b4f5e700b5d64bff62713dd9219273aa90020264fe528beb089533bd148470bf5bad0b7fa8636d62b287f1638ab06502aa8fd3483d0852a52a08e4b0630d31aa7c251193d8f5a2e3da8f4ba489caf18524f85de30e6fee7a4610",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/pages?populate=deep&filters[slug][$eq]=/instructorListing",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"pages"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "deep"
+								},
+								{
+									"key": "filters[slug][$eq]",
+									"value": "/instructorListing"
+								}
+							]
+						},
+						"description": "this is api for instructor listing this listing page has 4 section , data of 3 out of 4 section is can be found in this api\n\n1.  LET US HELP YOUR BUSSINESS :- all the data of this section can be found from data>>\\[0\\]>>attributes>>blocks , component name = blocks.hero-simple\n    \n\n2\\. WE ARE PROFESSIONALS :- all the data of this section can be found from\n\ndata>>\\[0\\]attributes>blocks\n\nStartFragment\n\ncomponent name = blocks.page-highlight-with-image\n\nEndFragment\n\n3.QUESETIONS ? WE ARE HAPPY TO HELP\n\nll the data of this section can be found from\n\ndata>>\\[0\\]attributes>blocks\n\nStartFragment\n\ncomponent name = blocks.page-question-section\n\nEndFragment"
+					},
+					"response": []
+				},
+				{
+					"name": "course -detail page",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1337/api/pages?populate=deep&filters[slug][$eq]=course-details",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"api",
+								"pages"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "deep"
+								},
+								{
+									"key": "filters[slug][$eq]",
+									"value": "course-details"
+								}
+							]
+						},
+						"description": "course detail have two section\n\nheroImagewithbutton -\n\ncomponent name - hero-image-with-button ,\n\ndetail- it has background image ,title ,subtitle , terms & conditions and button with text enroll now ,\n\n[https://prnt.sc/7qJzjSbkb4nk](https://prnt.sc/7qJzjSbkb4nk)\n\n![](dfdfdhttps://prnt.sc/7qJzjSbkb4nk)\n\nApiSection - it has title and button ,\n\n[https://prnt.sc/UH7txDT-Rx1k](https://prnt.sc/UH7txDT-Rx1k)\n\nall the Tab like Course Outline , Faq will be come from course api\n\n[https://prnt.sc/6JalJlIad5jp](https://prnt.sc/6JalJlIad5jp)"
+					},
+					"response": []
+				},
+				{
+					"name": "course-listing",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "learner-dashboard",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "privacy-policy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1337/api/pages?populate=deep&filters[slug][$eq]=privacy-policy ",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"api",
+								"pages"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "deep"
+								},
+								{
+									"key": "filters[slug][$eq]",
+									"value": "privacy-policy "
+								}
+							]
+						},
+						"description": "this is the privacy policy page api, all the data of privacy policy can be found from this api"
+					},
+					"response": []
+				},
+				{
+					"name": "terms-of-use",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"description": "this is the Terms-Of-Use page api, all the data of Terms of Use can be found from this api"
+					},
+					"response": []
+				},
+				{
+					"name": "cancellation-policy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1337/api/pages?populate=deep&filters[slug][$eq]=cancellation-policy ",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1337",
+							"path": [
+								"api",
+								"pages"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "deep"
+								},
+								{
+									"key": "filters[slug][$eq]",
+									"value": "cancellation-policy "
+								}
+							]
+						},
+						"description": "this is static page as mentioned in fsd, all the data of cancellation policy be come from this api"
+					},
+					"response": []
+				},
+				{
+					"name": "package-details",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "about-us",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n  \"identifier\": \"email or username\",\r\n  \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/auth/local",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"auth",
+								"local"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"username\":\"wasa@yopmail.com\",\"email\":\"wasa@yopmail.com\",\"password\":\"Himanshu123\",\"firstName\":\"watson\",\"lastName\":\"test\",\"address1\":\"hgh\",\"address2\":\"hghf\",\"phone\":\"9999991234\",\"PTIN\":\"p12345678\",\"companyName\":\"fhf\",\"country\":\"dsh\",\"state\":\"hdth\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/auth/local/register",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"auth",
+								"local",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgot password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"wasa@yopmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/auth/forgot-password",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"auth",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"code\":\"you will received token in ur validated email\",\r\n\"password\":\"new password\",\r\n\"passwordConfirmation\":\"confirm password\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/auth/reset-password",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"auth",
+								"reset-password"
+							]
+						},
+						"description": "provide the code which you will find in your register email,\n\nprovide password and confirm password"
+					},
+					"response": []
+				},
+				{
+					"name": "Resend confirmation Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "createtest1@yopmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/auth/send-email-confirmation",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"auth",
+								"send-email-confirmation"
+							]
+						},
+						"description": "this end point will take users email in body , will send Reset Link on users email"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Packages",
+			"item": [
+				{
+					"name": "get packages",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "0d23b8c1ceeb12f5c91b599ba8d10f69690d52bf0ff74ee1c6492fe99415c0d60d5bbb3c3a7366623b9b0dae74ff70fde27da6963bb35beb60a4dc6b0a07b006cf120448755b8bab930167c1fdfdc9d74205681eb75469b1def51fdb3f6a6aa63d0e1bae662fa8bd42778a3f9e8c1e137b9179c5f5f05a7ea20bebd45771d299",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://asteridadminqa.essentialdemo.com/api/packages?populate=deep",
+							"protocol": "https",
+							"host": [
+								"asteridadminqa",
+								"essentialdemo",
+								"com"
+							],
+							"path": [
+								"api",
+								"packages"
+							],
+							"query": [
+								{
+									"key": "populate",
+									"value": "deep"
+								}
+							]
+						},
+						"description": "this api is for getting all the packages ,\n\nthe packages api contains all the coursed include in particular package and respective details\n\nwe can use populate =* or populate= deep depending up on the requirements"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user",
+			"item": [
+				{
+					"name": "me",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "update me",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Email-us",
+			"item": [
+				{
+					"name": "email-us",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

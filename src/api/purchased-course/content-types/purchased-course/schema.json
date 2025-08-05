@@ -1,0 +1,102 @@
+{
+  "kind": "collectionType",
+  "collectionName": "purchased_courses",
+  "info": {
+    "singularName": "purchased-course",
+    "pluralName": "purchased-courses",
+    "displayName": "purchasedCourse",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "userEmail": {
+      "type": "email"
+    },
+    "title": {
+      "type": "string"
+    },
+    "purchaseDate": {
+      "type": "datetime"
+    },
+    "purchaseTime": {
+      "type": "datetime"
+    },
+    "amount": {
+      "type": "float"
+    },
+    "amountDiscounted": {
+      "type": "float"
+    },
+    "amountNet": {
+      "type": "float"
+    },
+    "certificateStatus": {
+      "type": "enumeration",
+      "enum": [
+        "Granted",
+        "Not Granted"
+      ]
+    },
+    "courseStartDate": {
+      "type": "datetime"
+    },
+    "courseEndDate": {
+      "type": "datetime"
+    },
+    "courseSessionDuration": {
+      "type": "float"
+    },
+    "faculty": {
+      "type": "string"
+    },
+    "discountCode": {
+      "type": "string"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::order.order",
+      "inversedBy": "purchased_courses"
+    },
+    "course": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::course.course"
+    },
+    "couponValue": {
+      "type": "float"
+    },
+    "couponType": {
+      "type": "string"
+    },
+    "durationUnit": {
+      "type": "string"
+    },
+    "package": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::package.package",
+      "inversedBy": "purchased_courses"
+    },
+    "isPackage": {
+      "type": "boolean",
+      "default": false
+    },
+    "programNumber": {
+      "type": "string"
+    }
+  }
+}

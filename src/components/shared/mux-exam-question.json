@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_shared_mux_exam_questions",
+  "info": {
+    "displayName": "MuxExamQuestion",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "srNo": {
+      "type": "string",
+      "required": true
+    },
+    "hint": {
+      "type": "string"
+    },
+    "options": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.mux-question-options"
+    },
+    "isMCQ": {
+      "type": "boolean",
+      "required": true
+    },
+    "displayOrder": {
+      "type": "integer"
+    },
+    "minute": {
+      "type": "time"
+    }
+  }
+}

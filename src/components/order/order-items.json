@@ -1,0 +1,43 @@
+{
+  "collectionName": "components_order_order_items",
+  "info": {
+    "displayName": "OrderItems",
+    "icon": "arrow-circle-up",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "courseId": {
+      "type": "integer",
+      "required": true
+    },
+    "packageId": {
+      "type": "integer",
+      "required": true
+    },
+    "qty": {
+      "type": "integer",
+      "required": true
+    },
+    "title": {
+      "type": "string"
+    },
+    "Enrolls": {
+      "type": "component",
+      "repeatable": true,
+      "component": "cart.enrollements"
+    },
+    "imageUrl": {
+      "type": "text"
+    },
+    "price": {
+      "type": "biginteger"
+    },
+    "finalPrice": {
+      "type": "float"
+    },
+    "category": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_blocks_hero_simple_with_image_s",
+  "info": {
+    "displayName": "Hero (SimpleWithImage)",
+    "icon": "atlas",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "background": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "subtitle": {
+      "type": "string"
+    }
+  }
+}

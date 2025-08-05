@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_shared_text_with_links",
+  "info": {
+    "displayName": "TextWithLinks",
+    "icon": "align-left",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "text"
+    },
+    "subtitle": {
+      "type": "text"
+    },
+    "socialLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.social-networks"
+    }
+  }
+}

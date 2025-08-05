@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_cart_enrollements",
+  "info": {
+    "displayName": "Enrollements",
+    "icon": "calendar-plus",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "courseId": {
+      "type": "integer"
+    },
+    "email": {
+      "type": "email"
+    },
+    "name": {
+      "type": "string"
+    },
+    "lastname": {
+      "type": "string"
+    },
+    "ptin": {
+      "type": "string"
+    },
+    "packageId": {
+      "type": "integer"
+    }
+  }
+}

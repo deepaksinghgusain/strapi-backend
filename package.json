@@ -1,0 +1,53 @@
+{
+  "name": "my-project",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A Strapi application",
+  "scripts": {
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi"
+  },
+  "dependencies": {
+    "@_sh/strapi-plugin-ckeditor": "^1.1.2",
+    "@mux/mux-node": "^6.3.0",
+    "@strapi/plugin-documentation": "^4.3.4",
+    "@strapi/plugin-graphql": "^4.3.4",
+    "@strapi/plugin-i18n": "^4.3.4",
+    "@strapi/plugin-seo": "^1.7.3",
+    "@strapi/plugin-users-permissions": "^4.3.4",
+    "@strapi/provider-email-sendgrid": "^4.3.4",
+    "@strapi/strapi": "^4.3.4",
+    "better-sqlite3": "^8.0.0",
+    "exceljs": "^4.3.0",
+    "html-to-text": "^8.2.1",
+    "json-bigint": "^1.0.0",
+    "jspdf": "^2.5.1",
+    "moment": "2.29.4",
+    "moment-timezone": "^0.5.40",
+    "mysql": "^2.18.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^5.3.4",
+    "strapi-plugin-mux-video-uploader": "^2.1.1",
+    "strapi-plugin-populate-deep": "^0.1.2",
+    "strapi-plugin-slugify": "^2.2.2",
+    "stripe": "^9.14.0",
+    "styled-components": "^5.3.3",
+    "twilio": "^3.81.0",
+    "xml-js": "^1.6.11",
+    "yup": "^1.6.1"
+  },
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "strapi": {
+    "uuid": "0e61a25c-d6df-4d29-ac6e-7a877c509587"
+  },
+  "engines": {
+    "node": ">=12.x.x <=16.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}

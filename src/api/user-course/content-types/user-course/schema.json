@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_courses",
+  "info": {
+    "singularName": "user-course",
+    "pluralName": "user-courses",
+    "displayName": "UserCourse",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "Completed",
+        "InProgress",
+        "NotStarted"
+      ]
+    },
+    "purchasedOn": {
+      "type": "datetime"
+    },
+    "course": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course.course",
+      "inversedBy": "user_courses"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "required": true,
+      "inversedBy": "coursePurchased"
+    },
+    "completedOn": {
+      "type": "date"
+    },
+    "joinUrl": {
+      "type": "string"
+    },
+    "registrantKey": {
+      "type": "text"
+    },
+    "isReviewExamPassed": {
+      "type": "boolean",
+      "default": false
+    },
+    "lastVideoView": {
+      "type": "float"
+    }
+  }
+}

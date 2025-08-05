@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_shared_feature_items",
+  "info": {
+    "displayName": "FeatureItem",
+    "icon": "ad"
+  },
+  "options": {},
+  "attributes": {
+    "index": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    }
+  }
+}

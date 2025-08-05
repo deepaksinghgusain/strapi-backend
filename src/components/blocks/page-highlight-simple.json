@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_blocks_page_highlight_simple_s",
+  "info": {
+    "displayName": "Highlight(Simple)",
+    "icon": "archway",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

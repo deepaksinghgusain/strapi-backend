@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "logs",
+  "info": {
+    "singularName": "log",
+    "pluralName": "logs",
+    "displayName": "log",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "orderId": {
+      "type": "biginteger"
+    },
+    "status": {
+      "type": "string"
+    },
+    "userId": {
+      "type": "biginteger"
+    },
+    "email": {
+      "type": "email"
+    },
+    "purchaseDate": {
+      "type": "datetime"
+    },
+    "gtagData": {
+      "type": "json"
+    }
+  
+  }
+}

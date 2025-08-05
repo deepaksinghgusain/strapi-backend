@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_blocks_hero_image_with_titles_subtitles",
+  "info": {
+    "displayName": "HeroImageWithTitlesSubtitle"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subTitle": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "background": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

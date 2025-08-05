@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_bullet_texts",
+  "info": {
+    "displayName": "bulletText",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "item": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    }
+  }
+}

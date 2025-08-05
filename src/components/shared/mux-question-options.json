@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_mux_question_options",
+  "info": {
+    "displayName": "MuxQuestionOptions"
+  },
+  "options": {},
+  "attributes": {
+    "srNo": {
+      "type": "string",
+      "required": true
+    },
+    "option": {
+      "type": "string",
+      "required": true
+    },
+    "isAnswer": {
+      "type": "boolean"
+    },
+    "displayOrder": {
+      "type": "integer"
+    }
+  }
+}

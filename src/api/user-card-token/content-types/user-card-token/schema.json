@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_card_tokens",
+  "info": {
+    "singularName": "user-card-token",
+    "pluralName": "user-card-tokens",
+    "displayName": "userCardToken",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "userId": {
+      "type": "integer"
+    },
+    "email": {
+      "type": "email"
+    },
+    "stripeCustomerId": {
+      "type": "string"
+    },
+    "stripeCardToken": {
+      "type": "string"
+    },
+    "stripeCardId": {
+      "type": "string"
+    }
+  }
+}

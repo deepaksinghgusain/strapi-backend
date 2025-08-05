@@ -1,0 +1,28 @@
+{
+  "kind": "singleType",
+  "collectionName": "signinpages",
+  "info": {
+    "singularName": "signinpage",
+    "pluralName": "signinpages",
+    "displayName": "Signinpage"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "signinTitle": {
+      "type": "string"
+    },
+    "signinbutton": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.button"
+    },
+    "heroSection": {
+      "type": "component",
+      "repeatable": false,
+      "component": "blocks.hero-simple-with-image"
+    }
+  }
+}

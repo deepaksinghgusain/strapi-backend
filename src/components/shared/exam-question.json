@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_shared_exam_questions",
+  "info": {
+    "displayName": "ExamQuestion",
+    "icon": "question",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "srNo": {
+      "type": "string",
+      "required": true
+    },
+    "options": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.question-option",
+      "max": 6
+    },
+    "isMCQ": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "displayOrder": {
+      "type": "integer"
+    },
+    "durationInminute": {
+      "type": "time"
+    }
+  }
+}

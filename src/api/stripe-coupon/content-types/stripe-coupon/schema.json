@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "stripe_coupons",
+  "info": {
+    "singularName": "stripe-coupon",
+    "pluralName": "stripe-coupons",
+    "displayName": "StripeCoupon",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "content-manager": {
+      "visible": false
+    },
+    "content-type-builder": {
+      "visible": false
+    }
+  },
+  "attributes": {
+    "couponName": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "couponType": {
+      "type": "enumeration",
+      "enum": [
+        "amountOff",
+        "percentOff"
+      ],
+      "default": "amountOff",
+      "required": true
+    },
+    "amountOffValue": {
+      "type": "integer",
+      "min": 0
+    },
+    "percentOffValue": {
+      "type": "integer",
+      "min": 0,
+      "max": 100
+    },
+    "duration": {
+      "type": "enumeration",
+      "enum": [
+        "once",
+        "month",
+        "forever"
+      ],
+      "default": "forever",
+      "required": true
+    },
+    "durationInMonth": {
+      "type": "integer",
+      "min": 0,
+      "max": 12
+    },
+    "couponId": {
+      "type": "string",
+      "unique": true,
+      "private": true
+    }
+  }
+}

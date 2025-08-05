@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_blocks_static_sections",
+  "info": {
+    "displayName": "StaticSection",
+    "icon": "comment-alt"
+  },
+  "options": {},
+  "attributes": {
+    "staticText": {
+      "type": "richtext"
+    }
+  }
+}

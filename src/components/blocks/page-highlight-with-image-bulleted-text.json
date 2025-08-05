@@ -1,0 +1,40 @@
+{
+  "collectionName": "components_blocks_page_highlight_w_img_bt",
+  "info": {
+    "displayName": "OurValues",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "lines": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.bullet-text"
+    },
+    "button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.button"
+    }
+  }
+}

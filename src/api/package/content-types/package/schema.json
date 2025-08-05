@@ -1,0 +1,66 @@
+{
+  "kind": "collectionType",
+  "collectionName": "packages",
+  "info": {
+    "singularName": "package",
+    "pluralName": "packages",
+    "displayName": "Package",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "desc": {
+      "type": "string"
+    },
+    "price": {
+      "type": "decimal"
+    },
+    "faqs": {
+      "type": "component",
+      "repeatable": false,
+      "component": "blocks.faq"
+    },
+    "outline": {
+      "type": "richtext"
+    },
+    "slug": {
+      "type": "text"
+    },
+    "discountedPrice": {
+      "type": "decimal"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "packages"
+    },
+    "purchased_courses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::purchased-course.purchased-course",
+      "mappedBy": "package"
+    },
+    "courses": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::course.course",
+      "inversedBy": "packages"
+    }
+  }
+}

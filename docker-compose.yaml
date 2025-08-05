@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+  asteridlmsbackend:
+    image: testadmincpewarehouse:latest
+    container_name: testadmincpewarehouse
+    ports:
+      - 1347:1347
+    extra_hosts:
+      - "host.docker.internal:host-gateway"        

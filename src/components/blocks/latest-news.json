@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_blocks_latest_news",
+  "info": {
+    "displayName": "latestNews"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "text"
+    }, "newsItem": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.news-item"
+    }
+   
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "kind": "singleType",
+  "collectionName": "globals",
+  "info": {
+    "singularName": "global",
+    "pluralName": "globals",
+    "displayName": "Global",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "navigation": {
+      "type": "component",
+      "repeatable": false,
+      "component": "global.navigation"
+    },
+    "homeLink": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.link"
+    },
+    "footer": {
+      "type": "component",
+      "repeatable": false,
+      "component": "global.footer"
+    },
+    "socialLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.social-networks"
+    },
+    "EmailTemplates": {
+      "type": "component",
+      "repeatable": true,
+      "component": "global.email-templates"
+    },
+    "examPassPercentage": {
+      "type": "float",
+      "default": 70
+    },
+    "headerLogo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "notificationEmail": {
+      "type": "string"
+    },
+    "gtmPassword": {
+      "type": "string",
+      "required": true
+    },
+    "invoiceTemplate": {
+      "allowedTypes": [
+        "files"
+      ],
+      "type": "media",
+      "multiple": false
+    }
+  }
+}

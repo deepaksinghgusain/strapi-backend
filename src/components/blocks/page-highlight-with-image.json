@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_blocks_page_highlight_w_img",
+  "info": {
+    "displayName": "Highlight(WImage)",
+    "icon": "ankh",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.button"
+    },
+    "description": {
+      "type": "richtext"
+    }
+  }
+}

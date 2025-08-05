@@ -1,0 +1,35 @@
+{
+  "collectionName": "components_global_footers",
+  "info": {
+    "displayName": "Footer",
+    "icon": "align-right",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },"title": {
+      "type": "string"
+    },
+    "offices": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.footer-office"
+    },
+    "FooterLinks": {
+      "displayName": "footerLinks",
+      "type": "component",
+      "repeatable": false,
+      "component": "global.footer-links"
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Orders",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "OrderItems": {
+      "displayName": "OrderItems",
+      "type": "component",
+      "repeatable": true,
+      "component": "order.order-items"
+    },
+    "userId": {
+      "type": "integer",
+      "required": true
+    },
+    "totalPrice": {
+      "type": "decimal"
+    },
+    "discountCode": {
+      "type": "string"
+    },
+    "discountPrice": {
+      "type": "decimal"
+    },
+    "finalPrice": {
+      "type": "decimal"
+    },
+    "stripeOrderId": {
+      "type": "string"
+    },
+    "orderStatus": {
+      "type": "string"
+    },
+    "discountType": {
+      "type": "string"
+    },
+    "userName": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "receiptUrl": {
+      "type": "string"
+    },
+    "purchased_courses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::purchased-course.purchased-course",
+      "mappedBy": "order"
+    },
+    "stripeSessionId": {
+      "type": "string"
+    }
+  }
+}

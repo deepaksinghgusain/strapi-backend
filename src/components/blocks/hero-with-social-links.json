@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_blocks_hero_with_social_links",
+  "info": {
+    "displayName": "Hero WithSocialLinks",
+    "icon": "award",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string",
+      "required": true
+    },
+    "background": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    
+    "video": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.video-section"
+    }
+  }
+}

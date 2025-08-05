@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "discount_coupons",
+  "info": {
+    "singularName": "discount-coupon",
+    "pluralName": "discount-coupons",
+    "displayName": "DiscountCoupon",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "couponName": {
+      "type": "string",
+      "required": true
+    },
+    "couponType": {
+      "type": "enumeration",
+      "enum": [
+        "amountOff",
+        "percentOff"
+      ],
+      "default": "amountOff",
+      "required": true
+    },
+    "amountOffValue": {
+      "type": "integer",
+      "min": 0
+    },
+    "percentOffValue": {
+      "type": "integer",
+      "min": 0,
+      "max": 100
+    },
+    "duration": {
+      "type": "enumeration",
+      "enum": [
+        "month",
+        "forever"
+      ],
+      "default": "forever",
+      "required": true
+    },
+    "durationInMonth": {
+      "type": "integer",
+      "min": 0,
+      "max": 12
+    },
+    "noOfRedemption": {
+      "type": "integer",
+      "private": true,
+      "default": 0,
+      "visible":false
+    }
+  }
+}

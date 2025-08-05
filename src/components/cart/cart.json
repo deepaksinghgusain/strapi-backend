@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_cart_carts",
+  "info": {
+    "displayName": "CartItems",
+    "icon": "cart-plus",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "courseId": {
+      "type": "integer"
+    },
+    "qty": {
+      "type": "integer"
+    },
+    "packageId": {
+      "type": "integer"
+    },
+    "Enrollment": {
+      "type": "component",
+      "repeatable": true,
+      "component": "cart.enrollements"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_shared_footer_office_s",
+  "info": {
+    "displayName": "footer(Office)",
+    "icon": "business-time",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "address": {
+      "type": "text",
+      "required": true
+    },
+    "contact": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    }
+  }
+}

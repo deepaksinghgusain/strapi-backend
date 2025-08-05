@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_shared_question_options",
+  "info": {
+    "displayName": "QuestionOption",
+    "icon": "angle-right",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "srNo": {
+      "type": "string",
+      "required": true
+    },
+    "option": {
+      "type": "string",
+      "required": true
+    },
+    "isAnswer": {
+      "type": "boolean",
+      "default": false
+    },
+    "displayOrder": {
+      "type": "integer"
+    },
+    "hint": {
+      "type": "text"
+    }
+  }
+}

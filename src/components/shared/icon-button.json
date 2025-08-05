@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_shared_icon_button_s",
+  "info": {
+    "displayName": "iconButton "
+  },
+  "options": {},
+  "attributes": {
+    "button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.button"
+    }
+  }
+}

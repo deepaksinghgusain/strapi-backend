@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_bullet2_line_texts",
+  "info": {
+    "displayName": "bullet2LineText",
+    "icon": "calculator"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    }
+  }
+}

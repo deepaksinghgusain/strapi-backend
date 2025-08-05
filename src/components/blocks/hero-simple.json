@@ -1,0 +1,33 @@
+{
+  "collectionName": "components_blocks_hero_simple_s",
+  "info": {
+    "displayName": "Hero(SimpleWithVideo)",
+    "icon": "calendar-week",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string",
+      "required": false
+    },
+    "videoDetail": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.video-section",
+      "required": true
+    },
+    "background": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

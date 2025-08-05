@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_blocks_feature_textonly_s",
+  "info": {
+    "displayName": "WhatYouGet",
+    "icon": "calendar-alt",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "features": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.feature-item"
+    },
+    "button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.button"
+    },
+    "subtitle": {
+      "type": "text"
+    }
+  }
+}

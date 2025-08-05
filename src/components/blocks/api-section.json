@@ -1,0 +1,42 @@
+{
+  "collectionName": "components_blocks_api_sections",
+  "info": {
+    "displayName": "ApiSection",
+    "icon": "bars",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "text"
+    },
+    "button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.button"
+    },
+    "search": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.search"
+    },
+    "Index": {
+      "type": "enumeration",
+      "enum": [
+        "Home>Courses",
+        "Home>Instructor",
+        "Catalogue>Courses",
+        "Catalogue>Packages",
+        "Catalogue>Instructors",
+        "Instructor>Instructors",
+        "Course>Courses",
+        "SelfStudy>Events",
+        "SelfStudy>Instructors",
+        "SelfStudy>Exam",
+        "Dashboard>Taxbytes",
+        "Exam>Overview"
+      ],
+      "required": true
+    }
+  }
+}

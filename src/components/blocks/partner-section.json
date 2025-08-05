@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_blocks_partner_sections",
+  "info": {
+    "displayName": "partnerSection",
+    "icon": "certificate",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string",
+      "required": true
+    },
+    "partners": {
+      "displayName": "partnerItem",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.partner-item"
+    }
+  }
+}

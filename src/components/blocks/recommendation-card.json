@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_blocks_recommendation_cards",
+  "info": {
+    "displayName": "RecommendationCard",
+    "icon": "address-card",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "recommendationItems": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.text-item"
+    }
+  }
+}
