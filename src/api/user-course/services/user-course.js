@@ -14,6 +14,7 @@ module.exports = createCoreService(
   ({ strapi }) => ({
     //Generate Access Token with Username and password
     generateAccessToken: async (zoomAccount) => {
+      
       console.log("Selected Zoom Account:", zoomAccount);
     
       // Fetch global GTM data
@@ -25,20 +26,29 @@ module.exports = createCoreService(
       const gtmPassword = gData.gtmPassword || null;
     
       // Determine Zoom credentials based on the zoomAccount value
+      // const zoomCredentials = {
+      //   clientId: zoomAccount === "zoom_account_1" ? process.env.ZOOM_CLIENT_ID_1 : process.env.ZOOM_CLIENT_ID_2,
+      //   clientSecret: zoomAccount === "zoom_account_1" ? process.env.ZOOM_CLIENT_SECRET_1 : process.env.ZOOM_CLIENT_SECRET_2,
+      //   accountId: zoomAccount === "zoom_account_1" ? process.env.ZOOM_ACCOUNT_ID_1 : process.env.ZOOM_ACCOUNT_ID_2,
+      // };
+
       const zoomCredentials = {
-        clientId: zoomAccount === "zoom_account_1" ? process.env.ZOOM_CLIENT_ID_1 : process.env.ZOOM_CLIENT_ID_2,
-        clientSecret: zoomAccount === "zoom_account_1" ? process.env.ZOOM_CLIENT_SECRET_1 : process.env.ZOOM_CLIENT_SECRET_2,
-        accountId: zoomAccount === "zoom_account_1" ? process.env.ZOOM_ACCOUNT_ID_1 : process.env.ZOOM_ACCOUNT_ID_2,
+        clientId:  process.env.ZOOM_CLIENT_ID,
+        clientSecret: process.env.ZOOM_CLIENT_SECRET,
+        accountId: process.env.ZOOM_ACCOUNT_ID,
       };
     
       console.log("Using Zoom Credentials:", zoomCredentials);
+
+      console.log(`Basic ${Buffer.from(`${zoomCredentials.clientId}:${zoomCredentials.clientSecret}`).toString('base64')}`);
+      
     
       // Configure request options for token generation
       const config = {
         method: "post",
         url: `https://zoom.us/oauth/token?grant_type=account_credentials&account_id=${zoomCredentials.accountId}`,
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
           Authorization: `Basic ${Buffer.from(`${zoomCredentials.clientId}:${zoomCredentials.clientSecret}`).toString('base64')}`,
         },
       };

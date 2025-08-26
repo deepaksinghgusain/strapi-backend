@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2025-08-05T14:25:54.141Z"
+    "x-generation-date": "2025-08-20T10:25:29.801Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -25,7 +25,7 @@
   },
   "servers": [
     {
-      "url": "http://admin.cmeavenue.com/api",
+      "url": "http://localhost:3000/api",
       "description": "Development server"
     }
   ],
