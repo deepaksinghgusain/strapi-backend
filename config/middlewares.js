@@ -7,6 +7,7 @@ module.exports = [
       enabled: true,
       headers: '*',
       origin: [
+        "http://localhost:4200"
        ]
     }
   },

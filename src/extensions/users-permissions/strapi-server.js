@@ -271,8 +271,6 @@ module.exports = (plugin) => {
 
   plugin.controllers.user.exportUsers = async (ctx) => {
 
-   
-
       const userData = await strapi.db.query('plugin::users-permissions.user').findMany(
   
         {
@@ -383,14 +381,11 @@ function timeZoneConverter(time){
       } catch (error) {
         console.log(error, "==========error=========");
       }
-
-   
- 
-
   };
   /* CUSTOMIZING ME ROUTE TO POPULATE IMAGE  */
 
   plugin.controllers.user.me = async (ctx) => {
+    console.log(ctx.state.user);
     user = ctx.state.user;
     if (!user) {
       return ctx.badRequest("user not exist");

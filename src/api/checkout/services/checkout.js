@@ -19,8 +19,8 @@ module.exports = {
     var coupon = "";
     var orderid = "";
     var customerEmail = "";
-    var productDesc='';
-    var discountCoupon ={
+    var productDesc = '';
+    var discountCoupon = {
 
     }
 
@@ -31,14 +31,14 @@ module.exports = {
       orderid = item.orderId;
       customerEmail = item.email;
       discountCoupon = item.discountCoupon
-      if(productDesc!=''){
-       
-        productDesc = productDesc + ","+ item.name 
-      }else{
-        
-        productDesc = productDesc + item.name 
+      if (productDesc != '') {
+
+        productDesc = productDesc + "," + item.name
+      } else {
+
+        productDesc = productDesc + item.name
       }
-     
+
       line_of_items.push({
         price_data: {
           currency: item.default_price_data.currency,
@@ -47,23 +47,23 @@ module.exports = {
             name: item.name,
             //   description: item.name,
             images: item.images,
-          }, 
-    
+          },
+
         },
         quantity: item.qty,
-      
+
       });
     });
 
     console.log("line_of_items,", line_of_items);
 
     return new Promise(async (resolve, reject) => {
-      createCheckoutLink(line_of_items, coupon, customerid, customerEmail,productDesc,discountCoupon).then(
+      createCheckoutLink(line_of_items, coupon, customerid, customerEmail, productDesc, discountCoupon).then(
         (respData) => {
-          
+
           updateOrderStripeId(respData.payment_intent, orderid);
-          updateStripeSessionId(respData.id,orderid)
-          
+          updateStripeSessionId(respData.id, orderid)
+
           resolve({
             url: respData.url,
             id: respData.payment_intent,
@@ -75,7 +75,8 @@ module.exports = {
 
   orderUpdateService: async (req) => {
     return new Promise(async (resolve, reject) => {
-      const endpointSecret = process.env.STRIPE_WEBHOOK_KEY;
+      const endpointSecret = process.env.STRIPE_WEBHOOK_KEY;      
+
       let event;
       let status;
       let currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
@@ -91,6 +92,9 @@ module.exports = {
         // );
 
         // Handle the event
+
+        console.log({event});        
+
         //Check payment status
         switch (event.type) {
           case "payment_intent.canceled":
@@ -121,15 +125,15 @@ module.exports = {
             break;
           default:
             status = event.type;
-            // console.log(`Unhandled event type ${event.type}`);
+          // console.log(`Unhandled event type ${event.type}`);
         }
 
         //  UPDATE ORDER AFTER PAYMENT
         try {
-	  const charge = await fetchStripeCharge(event);
+          const charge = await fetchStripeCharge(event);
           // await strapi.db.connection.transaction(async (transacting) => {
           //update in order table
-        
+
           const update = await strapi.db.query("api::order.order").update(
             {
               data: {
@@ -204,46 +208,44 @@ module.exports = {
                 });
               });
 
-              let  totalAmountPaid;
-              let  paymentStatus;
-              let  discountCouponObj; 
-              // console.log("event",event?.data?.object,"eventType",event.type);
-           
-              if(event.type =='payment_intent.succeeded' && event?.data?.object.status =='succeeded'){
-                  totalAmountPaid = (event?.data?.object?.amount_received)/100 || 0;
-                  paymentStatus = event?.data?.object.status || '';
-                  discountCouponObj = JSON.parse(event?.data?.object?.metadata?.discountCoupon)  ;
-                    
-             
-              }
-       
-            let  discountCouponEntry;
-             if(discountCouponObj?.name!=''){
+            let totalAmountPaid;
+            let paymentStatus;
+            let discountCouponObj;
+            // console.log("event",event?.data?.object,"eventType",event.type);
+
+            if (event.type == 'payment_intent.succeeded' && event?.data?.object.status == 'succeeded') {
+              totalAmountPaid = (event?.data?.object?.amount_received) / 100 || 0;
+              paymentStatus = event?.data?.object.status || '';
+              discountCouponObj = JSON.parse(event?.data?.object?.metadata?.discountCoupon);
+            }
+
+            let discountCouponEntry;
+            if (discountCouponObj?.name != '') {
               try {
                 discountCouponEntry = await strapi.entityService.findMany('api::discount-coupon.discount-coupon', {
-                  fields: ['id','noOfRedemption','couponName'],
+                  fields: ['id', 'noOfRedemption', 'couponName'],
                   filters: { couponName: discountCouponObj.name }
                 })
               } catch (error) {
-                console.log("error",error);
+                console.log("error", error);
               }
-              
-             }
-            
 
-             // udpate no of Redemption ;
-              let userCouponEmail = [];
+            }
 
-             if(discountCouponEntry?.length>0){
-               const uniqueCouponEntry = discountCouponEntry.filter((cpn)=>{
-               
-                 return  discountCouponObj.name === cpn.couponName
-               })
-      
-              const   updatedDiscountCouponEntry = await  updateDiscountCoupon(uniqueCouponEntry[0].id,uniqueCouponEntry[0].noOfRedemption)
-             }
 
-            
+            // udpate no of Redemption ;
+            let userCouponEmail = [];
+
+            if (discountCouponEntry?.length > 0) {
+              const uniqueCouponEntry = discountCouponEntry.filter((cpn) => {
+
+                return discountCouponObj.name === cpn.couponName
+              })
+
+              const updatedDiscountCouponEntry = await updateDiscountCoupon(uniqueCouponEntry[0].id, uniqueCouponEntry[0].noOfRedemption)
+            }
+
+
             const emdata = await orderConfirmationMail(
               totalAmountPaid,
               paymentStatus,
@@ -253,7 +255,7 @@ module.exports = {
               CLIENT_URL,
               URL
             );
-            console.log("EmailData=>",emdata);
+            console.log("EmailData=>", emdata);
 
             // checking it is exist in DB or not
             for (let userData in enrolledUsers) {
@@ -423,11 +425,11 @@ module.exports = {
                   }
                   // if (registrant.joinUrl) {
                   //Store joinUrl in user Course table
-                   console.log("userCourse Creating...");
-                   
-                let userCourse=  await strapi.db.query("api::user-course.user-course").create({
+                  console.log("userCourse Creating...");
+
+                  let userCourse = await strapi.db.query("api::user-course.user-course").create({
                     data: {
-                      course:userCoursePayload[payload].course,
+                      course: userCoursePayload[payload].course,
                       user: userCoursePayload[payload].user,
                       status: "NotStarted",
                       purchasedOn: new Date().toISOString(),
@@ -436,7 +438,7 @@ module.exports = {
                       registrantKey,
                     },
                   });
-                
+
                   console.log("userCourse Created.");
 
                   // creating purchasedCourse TABLE
@@ -471,8 +473,8 @@ module.exports = {
   },
 };
 
-async function fetchStripeCharge (event){
-  try {    
+async function fetchStripeCharge(event) {
+  try {
     var latestCharge = await stripe.charges.retrieve(
       event?.data?.object?.latest_charge,
       {
@@ -508,28 +510,28 @@ async function createProduct(data) {
 }
 
 /*** CREATE CHECKOUT LINK ***/
-async function createCheckoutLink(data, coupon, customerid, customerEmail,productDesc,discountCoupon) {
-  
+async function createCheckoutLink(data, coupon, customerid, customerEmail, productDesc, discountCoupon) {
+
   return new Promise(async (resolve, reject) => {
     try {
       var discounts =
         coupon != ""
           ? [
-              {
-                coupon: coupon,
-              },
-            ]
+            {
+              coupon: coupon,
+            },
+          ]
           : [];
       var paymentLink;
       const sessionData = {
         payment_method_types: ["card"],
         line_items: data,
         mode: "payment", // payment,
-        payment_intent_data:{
-          description:productDesc,
-          metadata : {discountCoupon : JSON.stringify(discountCoupon)}
+        payment_intent_data: {
+          description: productDesc,
+          metadata: { discountCoupon: JSON.stringify(discountCoupon) }
         },
-      
+
         // discounts: discounts,
         success_url: `${process.env.STRIPE_PAYMENT_SUCCESS_URL}?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: process.env.STRIPE_PAYMENT_FAIL_URL,
@@ -637,8 +639,8 @@ async function orderConfirmationMail(
 ) {
   return new Promise(async (resolve, reject) => {
 
-  try {
-    let liveDefaultTemp = `<head>
+    try {
+      let liveDefaultTemp = `<head>
     <title>hello</title>
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Pinyon+Script|Rochester">
@@ -898,203 +900,203 @@ async function orderConfirmationMail(
    
    </body>`;
 
-    const gData = await strapi.db.query("api::global.global").findOne({
-      where: {
-        id: 1,
-      },
-      select: ["notificationEmail"],
-      populate: {
-        socialLinks: true,
-        EmailTemplates: {
-          populate: {
-            template: true,
+      const gData = await strapi.db.query("api::global.global").findOne({
+        where: {
+          id: 1,
+        },
+        select: ["notificationEmail"],
+        populate: {
+          socialLinks: true,
+          EmailTemplates: {
+            populate: {
+              template: true,
+            },
           },
         },
-      },
-    });
-    let cc
-    if(gData.notificationEmail){
-       cc = gData?.notificationEmail.split(",") || EMAIL_REPLY_TO;
-    }else{
-      cc = EMAIL_REPLY_TO
-    }
-    
-   
-
-    const { socialLinks } = gData;
-
-    const { email, discountCode, finalPrice , id} = data;
-    // console.log("data",data);
-    let totalPrice ;
-    
-    if(totalAmountPaid >0 && paymentStatus == 'succeeded'){
-      // console.log("in if stripe",totalAmountPaid);
-      totalPrice = totalAmountPaid || finalPrice
-    }else{
-     
-     totalPrice = finalPrice 
-    //  console.log("totalAm++",totalPrice);
-    }
-
-   // console.log("total price and final price",totalPrice,finalPrice);
-       //totalPrice = finalPrice;
-    const items = data.OrderItems;
-    const length = items.length;
-    const notApplied = "NotApplied";
-    let dCode;
-    if (discountCode != '') {  
-      dCode = discountCode;
-    } else {
-      
-      dCode = "Not Applied";
-    }
-
-    
-    // fetching email templates
-
-    const orderConfTempData = gData.EmailTemplates.filter((value) => {
-      return value.templateName === "orderConfirmation";
-    });
-
-    let DashboardLink = `${CLIENT_URL}/learner/dashboard`;
-
-    // reading the html file from url
-    if (orderConfTempData && orderConfTempData[0]?.template?.url != null) {
-      let orderConfHtmlUrl = `public${orderConfTempData[0]?.template?.url}`;
-      let subject = `${orderConfTempData[0].subject} #${id}`;
-      let orderConfHtml;
-
-      fs.readFile(orderConfHtmlUrl, "utf8", function (err, html) {
-        if (err) {
-          console.log("<==err==>", err);
-        } else {
-          let check = isValidEmailTemplate(html);
-          console.log("isValidEmailTemplate", check);
-          if (check) {
-            orderConfHtml = html
-              .replace(
-                "{{totalPrice}}",
-                "<%= (Math.round(totalPrice * 100) / 100).toFixed(2) %>"
-              )
-              .replace(
-                "{{CourseIterationStart}}",
-                "<% for(var i=0; i <length; i++) { %>"
-              )
-              .replace(
-                "{{baseURL}}{{imageUrl}}",
-                "<%= URL %><%=items[i].imageUrl  %>"
-              )
-              .replace("{{title}}", "<%= items[i].title %>")
-              // .replace('{{price}}','<%=(Math.round(items[i].finalPrice * 100) / 100).toFixed(2)%>')
-              .replace("{{discountCode}}", "<%=dCode%>")
-              .replace("{{courseIterationEnd}}", "<% } %>")
-              .replace("{{dashboardUrl}}", "<%= DashboardLink %>")
-              .replace(
-                "{{socialLinksIterationStart}}",
-                " <% for(var i=0; i <socialLinks.length; i++) { %>"
-              )
-              .replace("{{socialLinksUrl}}", "<%= socialLinks[i].url %>")
-              .replace("{{socialLinksIterationEnd}}", "<% } %>")
-              .replace("{{socialLinksName}}", "<%= socialLinks[i].network %>")
-              .replace("{{socialLinksUrl}}", "<%= socialLinks[i].url %>");
-            sendTempEmail(orderConfHtml, subject);
-          }
-          //   IF  GIVEN TEMPLATE IS  WRONG   CHECK  RETURN FALSE
-          else {
-            console.log("in else if template is wrong");
-            let subject = `Order Confirmation # ${id}` ;
-            sendTempEmail(liveDefaultTemp, subject);
-          }
-        }
       });
-    } //  IF TEMPLATE IS NOT FOUND USE DEFAULT TEMPLATE
-    else {
-      console.log("in else if template is not found");
-      let subject = `Order Confirmation #${id}`;
-      sendTempEmail(liveDefaultTemp, subject);
-    }
-
-    function isValidEmailTemplate(html) {
-      let isValid = true;
-      let keyword = [
-        "{{totalPrice}}",
-        "{{CourseIterationStart}}",
-        "{{baseURL}}",
-        "{{imageUrl}}",
-        "{{title}}",
-        "{{discountCode}}",
-        "{{courseIterationEnd}}",
-        "{{dashboardUrl}}",
-        "{{socialLinksIterationStart}}",
-        "{{socialLinksUrl}}",
-        "{{socialLinksIterationEnd}}",
-        "{{socialLinksName}}",
-        "{{socialLinksUrl}}",
-      ];
-
-      for (let i = 1; i < keyword.length; i++) {
-        let result = html.includes(keyword[i]);
-
-        if (!result) {
-          isValid = false;
-          break;
-        }
+      let cc
+      if (gData.notificationEmail) {
+        cc = gData?.notificationEmail.split(",") || EMAIL_REPLY_TO;
+      } else {
+        cc = EMAIL_REPLY_TO
       }
 
-      return isValid;
 
-      // const isValid = html.includes("{{totalPrice}}","{{CourseIterationStart}}",
-      //  "{{baseURL}}","{{imageUrl}}","{{title}}","{{price}}",
-      //  "{{discountCode}}","{{courseIterationEnd}}","{{dashboardUrl}}","{{socialLinksIterationStart}}",
-      //  "{{socialLinksUrl}}","{{socialLinksIterationEnd}}","{{socialLinksName}}","{{socialLinksUrl}}"
-      //  )
 
-      //  return isValid;
-    }
-    function sendTempEmail(orderConfHtml, subject) {
-      try {
-        console.log("OrderConfirmation Mail Sending...."+ "subject=>",subject);
-        const emailTemplate = {
-          subject: subject,
-          text: "text",
-          html: orderConfHtml,
-        };
-        strapi.plugins["email"].services.email.sendTemplatedEmail(
-          {
-            to: email,
-            replyTo: EMAIL_REPLY_TO,
-            from: EMAIL_FROM,
-            cc: cc,
-           // bcc:cc,
-            // from: is not specified, so it's the defaultFrom that will be used instead
-          },
-          emailTemplate,
-          {
-            items,
-            email,
-            CLIENT_URL,
-            length,
-            totalPrice,
-            dCode,
-            notApplied,
-            socialLinks,
-            URL,
-            DashboardLink,
+      const { socialLinks } = gData;
+
+      const { email, discountCode, finalPrice, id } = data;
+      // console.log("data",data);
+      let totalPrice;
+
+      if (totalAmountPaid > 0 && paymentStatus == 'succeeded') {
+        // console.log("in if stripe",totalAmountPaid);
+        totalPrice = totalAmountPaid || finalPrice
+      } else {
+
+        totalPrice = finalPrice
+        //  console.log("totalAm++",totalPrice);
+      }
+
+      // console.log("total price and final price",totalPrice,finalPrice);
+      //totalPrice = finalPrice;
+      const items = data.OrderItems;
+      const length = items.length;
+      const notApplied = "NotApplied";
+      let dCode;
+      if (discountCode != '') {
+        dCode = discountCode;
+      } else {
+
+        dCode = "Not Applied";
+      }
+
+
+      // fetching email templates
+
+      const orderConfTempData = gData.EmailTemplates.filter((value) => {
+        return value.templateName === "orderConfirmation";
+      });
+
+      let DashboardLink = `${CLIENT_URL}/learner/dashboard`;
+
+      // reading the html file from url
+      if (orderConfTempData && orderConfTempData[0]?.template?.url != null) {
+        let orderConfHtmlUrl = `public${orderConfTempData[0]?.template?.url}`;
+        let subject = `${orderConfTempData[0].subject} #${id}`;
+        let orderConfHtml;
+
+        fs.readFile(orderConfHtmlUrl, "utf8", function (err, html) {
+          if (err) {
+            console.log("<==err==>", err);
+          } else {
+            let check = isValidEmailTemplate(html);
+            console.log("isValidEmailTemplate", check);
+            if (check) {
+              orderConfHtml = html
+                .replace(
+                  "{{totalPrice}}",
+                  "<%= (Math.round(totalPrice * 100) / 100).toFixed(2) %>"
+                )
+                .replace(
+                  "{{CourseIterationStart}}",
+                  "<% for(var i=0; i <length; i++) { %>"
+                )
+                .replace(
+                  "{{baseURL}}{{imageUrl}}",
+                  "<%= URL %><%=items[i].imageUrl  %>"
+                )
+                .replace("{{title}}", "<%= items[i].title %>")
+                // .replace('{{price}}','<%=(Math.round(items[i].finalPrice * 100) / 100).toFixed(2)%>')
+                .replace("{{discountCode}}", "<%=dCode%>")
+                .replace("{{courseIterationEnd}}", "<% } %>")
+                .replace("{{dashboardUrl}}", "<%= DashboardLink %>")
+                .replace(
+                  "{{socialLinksIterationStart}}",
+                  " <% for(var i=0; i <socialLinks.length; i++) { %>"
+                )
+                .replace("{{socialLinksUrl}}", "<%= socialLinks[i].url %>")
+                .replace("{{socialLinksIterationEnd}}", "<% } %>")
+                .replace("{{socialLinksName}}", "<%= socialLinks[i].network %>")
+                .replace("{{socialLinksUrl}}", "<%= socialLinks[i].url %>");
+              sendTempEmail(orderConfHtml, subject);
+            }
+            //   IF  GIVEN TEMPLATE IS  WRONG   CHECK  RETURN FALSE
+            else {
+              console.log("in else if template is wrong");
+              let subject = `Order Confirmation # ${id}`;
+              sendTempEmail(liveDefaultTemp, subject);
+            }
           }
-        );
-        console.log(" OrderConfirmation Mail Sent");
-      } catch (error) {
-        console.log("error=>",error);
+        });
+      } //  IF TEMPLATE IS NOT FOUND USE DEFAULT TEMPLATE
+      else {
+        console.log("in else if template is not found");
+        let subject = `Order Confirmation #${id}`;
+        sendTempEmail(liveDefaultTemp, subject);
       }
-    
-    }
-    // console.log("console...991");
+
+      function isValidEmailTemplate(html) {
+        let isValid = true;
+        let keyword = [
+          "{{totalPrice}}",
+          "{{CourseIterationStart}}",
+          "{{baseURL}}",
+          "{{imageUrl}}",
+          "{{title}}",
+          "{{discountCode}}",
+          "{{courseIterationEnd}}",
+          "{{dashboardUrl}}",
+          "{{socialLinksIterationStart}}",
+          "{{socialLinksUrl}}",
+          "{{socialLinksIterationEnd}}",
+          "{{socialLinksName}}",
+          "{{socialLinksUrl}}",
+        ];
+
+        for (let i = 1; i < keyword.length; i++) {
+          let result = html.includes(keyword[i]);
+
+          if (!result) {
+            isValid = false;
+            break;
+          }
+        }
+
+        return isValid;
+
+        // const isValid = html.includes("{{totalPrice}}","{{CourseIterationStart}}",
+        //  "{{baseURL}}","{{imageUrl}}","{{title}}","{{price}}",
+        //  "{{discountCode}}","{{courseIterationEnd}}","{{dashboardUrl}}","{{socialLinksIterationStart}}",
+        //  "{{socialLinksUrl}}","{{socialLinksIterationEnd}}","{{socialLinksName}}","{{socialLinksUrl}}"
+        //  )
+
+        //  return isValid;
+      }
+      function sendTempEmail(orderConfHtml, subject) {
+        try {
+          console.log("OrderConfirmation Mail Sending...." + "subject=>", subject);
+          const emailTemplate = {
+            subject: subject,
+            text: "text",
+            html: orderConfHtml,
+          };
+          strapi.plugins["email"].services.email.sendTemplatedEmail(
+            {
+              to: email,
+              replyTo: EMAIL_REPLY_TO,
+              from: EMAIL_FROM,
+              cc: cc,
+              // bcc:cc,
+              // from: is not specified, so it's the defaultFrom that will be used instead
+            },
+            emailTemplate,
+            {
+              items,
+              email,
+              CLIENT_URL,
+              length,
+              totalPrice,
+              dCode,
+              notApplied,
+              socialLinks,
+              URL,
+              DashboardLink,
+            }
+          );
+          console.log(" OrderConfirmation Mail Sent");
+        } catch (error) {
+          console.log("error=>", error);
+        }
+
+      }
+      // console.log("console...991");
       resolve('Resolve=>Email Sent')
-  } catch (error) {
-    console.log("error email", error);
-     reject("Error while Sending Mail");
-    //resolve('Resolve=>Email Sent')
-  }
+    } catch (error) {
+      console.log("error email", error);
+      reject("Error while Sending Mail");
+      //resolve('Resolve=>Email Sent')
+    }
   })
 
 }
@@ -1136,7 +1138,7 @@ async function loginCredentialMail(
       // reading the html file from url
       fs.readFile(logCredHtmlUrl, "utf8", function (err, html) {
         if (err) {
-         console.log("ERR==>",err);
+          console.log("ERR==>", err);
         } else {
           logCredHtml = html
             .replace("{{email}}", "<%= email %>")
@@ -1162,7 +1164,7 @@ async function loginCredentialMail(
           to: email,
           replyTo: EMAIL_REPLY_TO,
           from: EMAIL_FROM,
-         // bcc:BCC_EMAIL || 'cpewarehouses@gmail.com',
+          // bcc:BCC_EMAIL || 'cpewarehouses@gmail.com',
           // from: is not specified, so it's the defaultFrom that will be used instead
         },
         emailTemplate,
@@ -1186,12 +1188,12 @@ async function savePurchasedDetails(orderEntry) {
   try {
     //console.log("userCourse", orderEntry);
     if (orderEntry) {
-     
+
 
       // calling the course and package api
       if (orderEntry.OrderItems.length != 0) {
         orderEntry.OrderItems.map(async (data) => {
-         // console.log("data", data);
+          // console.log("data", data);
           if (data.courseId != 0) {
             let userData;
             const courseData = await strapi.db
@@ -1205,7 +1207,7 @@ async function savePurchasedDetails(orderEntry) {
               });
 
             data.Enrolls.map(async (enroll) => {
-             console.log("enroll in courses", enroll);
+              console.log("enroll in courses", enroll);
               const userEmail = enroll.email;
 
               // finding user email from enrolls and finding user data
@@ -1217,10 +1219,10 @@ async function savePurchasedDetails(orderEntry) {
                   },
                   select: ["id", "email"],
                 });
-             // console.log("userData", userData);
+              // console.log("userData", userData);
               if (courseData && userData) {
                 const isPackage = false;
-                
+
                 createPurchaseItems(userData, courseData, data, isPackage);
                 console.log("course creation in purchase detail");
               }
@@ -1311,35 +1313,35 @@ async function savePurchasedDetails(orderEntry) {
       } else {
         data.course = itemsData?.id;
 
-        console.log("itemData",itemsData.instructors);
-         let name = [];
-       let instructorName ;
+        console.log("itemData", itemsData.instructors);
+        let name = [];
+        let instructorName;
 
-        
-        if(itemsData.instructors.length>1){
+
+        if (itemsData.instructors.length > 1) {
           itemsData.instructors.forEach((element) => {
-        let instructname= element?.firstName + " " + element?.lastName
-         name.push(instructname)
+            let instructname = element?.firstName + " " + element?.lastName
+            name.push(instructname)
           });
-          instructorName=name.join(',')
+          instructorName = name.join(',')
         }
-        else if(itemsData.instructors.length==0){
-          instructorName =''
+        else if (itemsData.instructors.length == 0) {
+          instructorName = ''
         }
-        else{
-          instructorName=itemsData.instructors[0]?.firstName + " " + itemsData.instructors[0]?.lastName
+        else {
+          instructorName = itemsData.instructors[0]?.firstName + " " + itemsData.instructors[0]?.lastName
         }
 
         data.faculty = instructorName;
       }
-      
+
       const entry = await strapi.db
         .query("api::purchased-course.purchased-course")
         .create({
           data,
         });
 
-   // console.log("purchased Details Entry", entry);
+      // console.log("purchased Details Entry", entry);
     }
   } catch (error) {
     console.log("Error In SavePurchaseDetails=>", error);
@@ -1390,12 +1392,12 @@ async function savePurchasedDetails(orderEntry) {
   //     }
   console.log("purchaseCourse Entry Created");
 }
-async function updateDiscountCoupon(id,noOfRedemption ){
+async function updateDiscountCoupon(id, noOfRedemption) {
   const entry = await strapi.entityService.update('api::discount-coupon.discount-coupon', id, {
     data: {
-      noOfRedemption: noOfRedemption + 1 ,
-      
+      noOfRedemption: noOfRedemption + 1,
+
     }
   })
- 
+
 }
