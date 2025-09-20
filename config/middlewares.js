@@ -7,7 +7,8 @@ module.exports = [
       enabled: true,
       headers: '*',
       origin: [
-        "http://localhost:4200"
+        "http://localhost:4200",
+"https://cmeavenue.com"
        ]
     }
   },

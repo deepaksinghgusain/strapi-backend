@@ -21,6 +21,7 @@
     "@strapi/strapi": "^4.3.4",
     "better-sqlite3": "^8.0.0",
     "exceljs": "^4.3.0",
+    "handlebars": "^4.7.8",
     "html-to-text": "^8.2.1",
     "json-bigint": "^1.0.0",
     "jspdf": "^2.5.1",

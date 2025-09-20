@@ -5,6 +5,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY, {
 const bcrypt = require("bcryptjs");
 const moment = require("moment");
 const fs = require("fs");
+const Handlebars = require("handlebars");
 
 
 /**
@@ -73,9 +74,11 @@ module.exports = {
     });
   },
 
+
+
   orderUpdateService: async (req) => {
     return new Promise(async (resolve, reject) => {
-      const endpointSecret = process.env.STRIPE_WEBHOOK_KEY;      
+      const endpointSecret = process.env.STRIPE_WEBHOOK_KEY;
 
       let event;
       let status;
@@ -93,7 +96,7 @@ module.exports = {
 
         // Handle the event
 
-        console.log({event});        
+        console.log({ event });
 
         //Check payment status
         switch (event.type) {
@@ -640,265 +643,251 @@ async function orderConfirmationMail(
   return new Promise(async (resolve, reject) => {
 
     try {
-      let liveDefaultTemp = `<head>
+      let liveDefaultTemp = `   <head>
     <title>hello</title>
-    
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Pinyon+Script|Rochester">
     <style>
-      
-   .cursive {
-     font-family: 'Pinyon Script', cursive;
-   }
-   
-   .sans {
-     font-family: 'Open Sans', sans-serif;
-   }
-   
-   .bold {
-     font-weight: bold;
-   }
-   
-   .block {
-     display: block;
-   }
-   
-   .underline {
-     border-bottom: 1px solid #777;
-     padding: 5px;
-     margin-bottom: 15px;
-   }
-   
-   .margin-0 {
-     margin: 0;
-   }
-   
-   .padding-0 {
-     padding: 0;
-   }
-   
-   .pm-empty-space {
-     height: 40px;
-     width: 100%;
-   }
-   
-   body {
-     padding: 10px 0;
-     background: #ccc;
-   }
-   
-   .pm-certificate-container {
-     position: relative;
-     width: 800px;
-     height: 600px;
-     background-color: #618597;
-     padding: 30px;
-     color: #333;
-     font-family: 'Open Sans', sans-serif;
-     box-shadow: 0 0 5px rgba(0, 0, 0, .5);
-     /*background: -webkit-repeating-linear-gradient(
-       45deg,
-       #618597,
-       #618597 1px,
-       #b2cad6 1px,
-       #b2cad6 2px
-     );
-     background: repeating-linear-gradient(
-       90deg,
-       #618597,
-       #618597 1px,
-       #b2cad6 1px,
-       #b2cad6 2px
-     );*/
-     
-     .outer-border {
-       width: 794px;
-       height: 594px;
-       position: absolute;
-       left: 50%;
-       margin-left: -397px;
-       top: 50%;
-       margin-top:-297px;
-       border: 2px solid #fff;
-     }
-     
-     .inner-border {
-       width: 730px;
-       height: 530px;
-       position: absolute;
-       left: 50%;
-       margin-left: -365px;
-       top: 50%;
-       margin-top:-265px;
-       border: 2px solid #fff;
-     }
-   
-     .pm-certificate-border {
-       position: relative;
-       width: 720px;
-       height: 520px;
-       padding: 0;
-       border: 1px solid #E1E5F0;
-       background-color: rgba(255, 255, 255, 1);
-       background-image: none;
-       left: 50%;
-       margin-left: -360px;
-       top: 50%;
-       margin-top: -260px;
-   
-       .pm-certificate-block {
-         width: 650px;
-         height: 200px;
-         position: relative;
-         left: 50%;
-         margin-left: -325px;
-         top: 70px;
-         margin-top: 0;
-       }
-   
-       .pm-certificate-header {
-         margin-bottom: 10px;
-       }
-   
-       .pm-certificate-title {
-         position: relative;
-         top: 40px;
-   
-         h2 {
-           font-size: 34px !important;
-         }
-       }
-   
-       .pm-certificate-body {
-         padding: 20px;
-   
-         .pm-name-text {
-           font-size: 20px;
-         }
-       }
-   
-       .pm-earned {
-         margin: 15px 0 20px;
-         .pm-earned-text {
-           font-size: 20px;
-         }
-         .pm-credits-text {
-           font-size: 15px;
-         }
-       }
-   
-       .pm-course-title {
-         .pm-earned-text {
-           font-size: 20px;
-         }
-         .pm-credits-text {
-           font-size: 15px;
-         }
-       }
-   
-       .pm-certified {
-         font-size: 12px;
-   
-         .underline {
-           margin-bottom: 5px;
-         }
-       }
-   
-       .pm-certificate-footer {
-         width: 650px;
-         height: 100px;
-         position: relative;
-         left: 50%;
-         margin-left: -325px;
-         bottom: -105px;
-       }
-     }
-   }
-   
-   
+        .cursive {
+            font-family: 'Pinyon Script', cursive;
+        }
+
+        .sans {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .block {
+            display: block;
+        }
+
+        .underline {
+            border-bottom: 1px solid #777;
+            padding: 5px;
+            margin-bottom: 15px;
+        }
+
+        .margin-0 {
+            margin: 0;
+        }
+
+        .padding-0 {
+            padding: 0;
+        }
+
+        .pm-empty-space {
+            height: 40px;
+            width: 100%;
+        }
+
+        body {
+            padding: 10px 0;
+            background: #ccc;
+        }
+
+        .pm-certificate-container {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            background-color: #618597;
+            padding: 30px;
+            color: #333;
+            font-family: 'Open Sans', sans-serif;
+            box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+
+            .outer-border {
+                width: 794px;
+                height: 594px;
+                position: absolute;
+                left: 50%;
+                margin-left: -397px;
+                top: 50%;
+                margin-top: -297px;
+                border: 2px solid #fff;
+            }
+
+            .inner-border {
+                width: 730px;
+                height: 530px;
+                position: absolute;
+                left: 50%;
+                margin-left: -365px;
+                top: 50%;
+                margin-top: -265px;
+                border: 2px solid #fff;
+            }
+
+            .pm-certificate-border {
+                position: relative;
+                width: 720px;
+                height: 520px;
+                padding: 0;
+                border: 1px solid #E1E5F0;
+                background-color: rgba(255, 255, 255, 1);
+                background-image: none;
+                left: 50%;
+                margin-left: -360px;
+                top: 50%;
+                margin-top: -260px;
+
+                .pm-certificate-block {
+                    width: 650px;
+                    height: 200px;
+                    position: relative;
+                    left: 50%;
+                    margin-left: -325px;
+                    top: 70px;
+                    margin-top: 0;
+                }
+
+                .pm-certificate-header {
+                    margin-bottom: 10px;
+                }
+
+                .pm-certificate-title {
+                    position: relative;
+                    top: 40px;
+
+                    h2 {
+                        font-size: 34px !important;
+                    }
+                }
+
+                .pm-certificate-body {
+                    padding: 20px;
+
+                    .pm-name-text {
+                        font-size: 20px;
+                    }
+                }
+
+                .pm-earned {
+                    margin: 15px 0 20px;
+
+                    .pm-earned-text {
+                        font-size: 20px;
+                    }
+
+                    .pm-credits-text {
+                        font-size: 15px;
+                    }
+                }
+
+                .pm-course-title {
+                    .pm-earned-text {
+                        font-size: 20px;
+                    }
+
+                    .pm-credits-text {
+                        font-size: 15px;
+                    }
+                }
+
+                .pm-certified {
+                    font-size: 12px;
+
+                    .underline {
+                        margin-bottom: 5px;
+                    }
+                }
+
+                .pm-certificate-footer {
+                    width: 650px;
+                    height: 100px;
+                    position: relative;
+                    left: 50%;
+                    margin-left: -325px;
+                    bottom: -105px;
+                }
+            }
+        }
+
+        .imgStyle {
+            height: 100px;
+            width: 100px;
+        }
+
+        .tbl {
+            width: 75%
+        }
+
+        .tbl tr td {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .coursePrice {
+            width: 30%
+        }
+
+        .courseimg {
+            width: 30%
+        }
+
+        .coursedetail {
+            width: 40%
+        }
     </style>
-    
-    
-    <style>
-    .imgStyle{
-      height =100px;
-      width=100px;
- 
-    }
-   
-     .tbl {
-     width: 75%
-   
-     }
-   .tbl tr td {
-   padding-left:15px;
-   padding-right:15px;
-   }
-     .coursePrice{
-       width:30%
-     
-     }.courseimg{
-       width:30%
-       
-     }.coursedetail{
-       width:40%
-     }
-    </style>
-   </head>
-    <body>
-     
-      <p><b>Thanks for your purchase! Below is a confirmation of your order.</b></p>
-      
-      <p>Total: $<%= (Math.round(totalPrice * 100) / 100).toFixed(2) %> (Coupon Applied: <%=dCode%>)</p> 
-  
-      <% for(var i=0; i <length; i++) { %>               
-     <table class="tbl">
-     <tr>
-     <td class="courseimg" style="
-   padding-left:0px;
-   padding-right:20px;"
-   > 
-     <div class="imgStyle" >
-     <img src="<%= URL %><%=items[i].imageUrl  %>" alt="img"  style="height:100px;width:100px;">
-     </div>
-    
-     </td>
-     <td class="coursedetail"  style="
-   padding-left:20px;
-   padding-right:20px;"> 
-     <p style="color:#007eff;"> <%= items[i].title %> </p>
-     </td>
-     <td class="coursePrice"  style="
-   padding-left:20px;
-   padding-right:20px;">
-      
-     </td>
-     </tr>
-     </table
-   
-     <% } %>       
-   
+
+
+</head>
+
+<body>
+
+    <p><b>Thanks for your purchase! Below is a confirmation of your order.</b></p>
+
+    <p>Total: $ {{ totalPrice }} (Coupon Applied: {{dCode}})</p>
+
+    {{#each items}}
+    <table class="tbl">
+        <tr>
+            <td class="courseimg" style="padding-left:0px;padding-right:20px;">
+                <div class="imgStyle">
+                  
+                    <img src="{{URL}}{{this.imageUrl}}" alt="img" style="height:100px;width:100px;">
+                </div>
+
+            </td>
+            <td class="coursedetail" style="padding-left:20px;padding-right:20px;">
+                <p style="color:#007eff;">
+                    {{ this.title }}
+                </p>
+            </td>
+            <td class="coursePrice" style="padding-left:20px;padding-right:20px;">
+                $ {{ this.price }}
+            </td>
+        </tr>
+    </table>
+    {{/each}}
+
     <p><b>Please note the below mentioned points: </b></p>
     <p>- Your log-in details will be provided 24hrs before the start of the event. <br>
-   
-    - Please make sure that you are attentive during the course to answer your CPE questions. For self-study, please answer the review questions and the final exam <br>
-    
-    - Your credit card statement will show Asterid Group Inc. which is the parent company of CPE Warehouse. <br>
-    
-    - Questions? Reply to this email
+
+        - Please make sure that you are attentive during the course to answer your CPE questions. For self-study,
+        please answer the review questions and the final exam <br>
+
+        - Your credit card statement will show Asterid Group Inc. which is the parent company of CPE Warehouse. <br>
+
+        - Questions? Reply to this email
     </p>
-    <p><a style=" background-color: yellow;" href="<%= DashboardLink %>"><b><u >View your Dashboard</u></b><a/></p>
+    <p><a style=" background-color: yellow;" href="{{ DashboardLink }}"><b><u>View your Dashboard</u></b><a /></p>
     <p>Engage with us on Social media for discussions, tax updates and new upcoming events.</p>
-   
-    <% for(var i=0; i <socialLinks.length; i++) { %>
-      <p>-<%= socialLinks[i].network %>:<a href="<%= socialLinks[i].url %>"><u><%= socialLinks[i].url %></u><a/></p>
-     
-      <% } %>        
-   
+
+    {{#each socialLinks }}
+        <p>- 
+            {{ this.network }}:
+            <a href="{{ this.url }}">
+                <u>{{ this.url }}</u>
+            <a />
+        </p>
+    {{/each }}
+
     <p>Look forward to your participation.</p>
     <p>Team CPE Warehouse</p>
-    
-   
-   </body>`;
+</body> `;
 
       const gData = await strapi.db.query("api::global.global").findOne({
         where: {
@@ -920,8 +909,6 @@ async function orderConfirmationMail(
       } else {
         cc = EMAIL_REPLY_TO
       }
-
-
 
       const { socialLinks } = gData;
 
@@ -975,30 +962,25 @@ async function orderConfirmationMail(
             if (check) {
               orderConfHtml = html
                 .replace(
-                  "{{totalPrice}}",
-                  "<%= (Math.round(totalPrice * 100) / 100).toFixed(2) %>"
-                )
-                .replace(
                   "{{CourseIterationStart}}",
-                  "<% for(var i=0; i <length; i++) { %>"
+                  "{{#each items }}"
                 )
                 .replace(
                   "{{baseURL}}{{imageUrl}}",
-                  "<%= URL %><%=items[i].imageUrl  %>"
+                  "{{URL}}{{this.imageUrl}}"
                 )
-                .replace("{{title}}", "<%= items[i].title %>")
-                // .replace('{{price}}','<%=(Math.round(items[i].finalPrice * 100) / 100).toFixed(2)%>')
-                .replace("{{discountCode}}", "<%=dCode%>")
-                .replace("{{courseIterationEnd}}", "<% } %>")
-                .replace("{{dashboardUrl}}", "<%= DashboardLink %>")
+                .replace("{{title}}", "{{this.title}}")
+                .replace("{{discountCode}}", "{{dCode}}")
+                .replace("{{courseIterationEnd}}", "{{/each}}")
+                .replace("{{dashboardUrl}}", "{{DashboardLink}}")
                 .replace(
                   "{{socialLinksIterationStart}}",
-                  " <% for(var i=0; i <socialLinks.length; i++) { %>"
+                  "{{#each socialLinks }}"
                 )
-                .replace("{{socialLinksUrl}}", "<%= socialLinks[i].url %>")
-                .replace("{{socialLinksIterationEnd}}", "<% } %>")
-                .replace("{{socialLinksName}}", "<%= socialLinks[i].network %>")
-                .replace("{{socialLinksUrl}}", "<%= socialLinks[i].url %>");
+                .replace("{{socialLinksUrl}}", "{{this.url}}")
+                .replace("{{socialLinksIterationEnd}}", "{{/each}}")
+                .replace("{{socialLinksName}}", "{{this.network}}")
+                .replace("{{socialLinksUrl}}", "{{this.url}}");
               sendTempEmail(orderConfHtml, subject);
             }
             //   IF  GIVEN TEMPLATE IS  WRONG   CHECK  RETURN FALSE
@@ -1036,7 +1018,6 @@ async function orderConfirmationMail(
 
         for (let i = 1; i < keyword.length; i++) {
           let result = html.includes(keyword[i]);
-
           if (!result) {
             isValid = false;
             break;
@@ -1053,38 +1034,63 @@ async function orderConfirmationMail(
 
         //  return isValid;
       }
+
+      function orderEmail(orderTemplate, data) {
+        const template = Handlebars.compile(orderTemplate);
+        return template(data); // injects values + loops
+      }
+
       function sendTempEmail(orderConfHtml, subject) {
         try {
-          console.log("OrderConfirmation Mail Sending...." + "subject=>", subject);
-          const emailTemplate = {
-            subject: subject,
-            text: "text",
-            html: orderConfHtml,
-          };
-          strapi.plugins["email"].services.email.sendTemplatedEmail(
-            {
-              to: email,
-              replyTo: EMAIL_REPLY_TO,
-              from: EMAIL_FROM,
-              cc: cc,
-              // bcc:cc,
-              // from: is not specified, so it's the defaultFrom that will be used instead
-            },
-            emailTemplate,
-            {
-              items,
-              email,
-              CLIENT_URL,
-              length,
-              totalPrice,
-              dCode,
-              notApplied,
-              socialLinks,
-              URL,
-              DashboardLink,
-            }
-          );
-          console.log(" OrderConfirmation Mail Sent");
+        console.log("OrderConfirmation Mail Sending...." + "subject=>", subject);
+        
+        let orderData = {
+          items,
+          email,
+          CLIENT_URL,
+          length,
+          totalPrice: (Math.round(totalPrice * 100) / 100).toFixed(2),
+          dCode,
+          notApplied,
+          socialLinks,
+          URL,
+          imageURL : process.env.URL + "/",
+          DashboardLink,
+        }
+
+        strapi.plugin("email").service("email").send({
+          to: user.email,
+          to: email,
+          replyTo: EMAIL_REPLY_TO,
+          from: EMAIL_FROM,
+          subject: subject,
+          html: orderEmail(orderConfHtml, orderData),
+        });
+
+        // strapi.plugins["email"].services.email.sendTemplatedEmail(
+        //   {
+        //     to: email,
+        //     replyTo: EMAIL_REPLY_TO,
+        //     from: EMAIL_FROM,
+        //     cc: cc,
+        //     // bcc:cc,
+        //     // from: is not specified, so it's the defaultFrom that will be used instead
+        //   },
+        //   emailTemplate,
+        //   {
+        //     items,
+        //     email,
+        //     CLIENT_URL,
+        //     length,
+        //     totalPrice,
+        //     dCode,
+        //     notApplied,
+        //     socialLinks,
+        //     URL,
+        //     DashboardLink,
+        //   }
+        // );
+        console.log(" OrderConfirmation Mail Sent");
         } catch (error) {
           console.log("error=>", error);
         }
