@@ -63,7 +63,6 @@ module.exports = {
   }
 }
 
-
 /**** CHECK USER EXIST OR NOT IN STRIPE ****/
 async function checkUser(email) {
   return new Promise(async resolve => {

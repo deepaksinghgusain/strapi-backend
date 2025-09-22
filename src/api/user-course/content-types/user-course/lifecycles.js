@@ -2,76 +2,87 @@ const { ValidationError } = require("@strapi/utils").errors;
 const moment = require("moment");
 const currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
 const fs = require("fs");
-var { CLIENT_URL, EMAIL_REPLY_TO, EMAIL_FROM  } = process.env;
+var { CLIENT_URL, EMAIL_REPLY_TO, EMAIL_FROM } = process.env;
 module.exports = {
   async beforeCreate(event) {
 
     try {
       console.log("beforeCreating...");
-    const { data } = event.params;
+      const { data } = event.params;
 
-    if (!data.course) {
-      //if course in not selected it will throw error
-      throw new ValidationError("Course not found");
-    }
+      if (!data.course) {
+        //if course in not selected it will throw error
+        throw new ValidationError("Course not found");
+      }
 
-    if (!data.user) {
-      //if user is not created it will throw error
-      throw new ValidationError("User not found");
-    }
+      if (!data.user) {
+        //if user is not created it will throw error
+        throw new ValidationError("User not found");
+      }
 
-    let courseData;
-    if (data.course) {
-      courseData = await strapi.db
-        .query("api::course.course")
-        .findOne({ where: { id: data.course }, populate: { category: true } });
-    }
+      let courseData;
+      let courseID = data.course;
+      if (data.course) {
+        if (typeof data.course === "object" && "connect" in data.course) {
+          courseID = data.course?.connect[0]?.id;
+        }
 
-    if (courseData && courseData.category.title === "Live" && !data.joinUrl) {
-      const course = await strapi.db
-        .query("api::course.course")
-        .findOne({ where: { id: data.course } });
-      const user = await strapi.db
-        .query("plugin::users-permissions.user")
-        .findOne({ where: { id: data.user } });
+        courseData = await strapi.db
+          .query("api::course.course")
+          .findOne({ where: { id: courseID }, populate: { category: true } });
+      }
 
-      //check webinarId exist in course or not if not it will create and store webinarId
-      await checkWebinarExist(course);
-      //check user have the course or not if exist it will throw error
-      await checkUserCourseExist(user, course);
+      if (courseData && courseData.category.title === "Live" && !data.joinUrl) {
+        let userID = data.user;
 
-      //format start date and end date
-      course.startDate = moment(course.startDate)
-        .utc(true)
-        .format("YYYY-MM-DDTHH:mm:ss");
-      course.endDate = moment(course.endDate)
-        .utc(true)
-        .format("YYYY-MM-DDTHH:mm:ss");
+        if (typeof data.user === "object" && "connect" in data.user) {
+          userID = data.user?.connect[0]?.id;
+        }
 
-      //check end date is before current date and end date is before start date or not
-      if (
-        moment(currentDate).isSameOrBefore(
-          moment(course.endDate).format("YYYY-MM-DD HH:mm:ss")
-        ) &&
-        moment(course.startDate).isSameOrBefore(
-          moment(course.endDate).format("YYYY-MM-DD HH:mm:ss")
-        )
-      ) {
-        //create registrant and store in db
-        const registrant = await strapi
-          .service("api::user-course.user-course")
-          .createRegistraint(course.id, user);
-          console.log("----registrant-------   :     ",registrant);
-        if (registrant?.join_url) {
-          data.joinUrl = registrant?.join_url;
-          data.registrantKey = registrant?.registrant_id;
-        } else {
-          throw new ValidationError("error while creating Registrant");
+        const course = await strapi.db
+          .query("api::course.course")
+          .findOne({ where: { id: courseID } });
+        const user = await strapi.db
+          .query("plugin::users-permissions.user")
+          .findOne({ where: { id: userID } });
+
+        //check webinarId exist in course or not if not it will create and store webinarId
+        await checkWebinarExist(course);
+        //check user have the course or not if exist it will throw error
+        await checkUserCourseExist(user, course);
+
+        //format start date and end date
+        course.startDate = moment(course.startDate)
+          .utc(true)
+          .format("YYYY-MM-DDTHH:mm:ss");
+        course.endDate = moment(course.endDate)
+          .utc(true)
+          .format("YYYY-MM-DDTHH:mm:ss");
+
+        //check end date is before current date and end date is before start date or not
+        if (
+          moment(currentDate).isSameOrBefore(
+            moment(course.endDate).format("YYYY-MM-DD HH:mm:ss")
+          ) &&
+          moment(course.startDate).isSameOrBefore(
+            moment(course.endDate).format("YYYY-MM-DD HH:mm:ss")
+          )
+        ) {
+          //create registrant and store in db
+          const registrant = await strapi
+            .service("api::user-course.user-course")
+            .createRegistraint(course.id, user);
+          console.log("----registrant-------   :     ", registrant);
+          if (registrant?.join_url) {
+            data.joinUrl = registrant?.join_url;
+            data.registrantKey = registrant?.registrant_id;
+          } else {
+            throw new ValidationError("error while creating Registrant");
+          }
         }
       }
-    }
     } catch (error) {
-      console.log("userCourse Before Create Error=>",error);
+      console.log("userCourse Before Create Error=>", error);
     }
     console.log("beforeCreate Lifecycle end");
   },
@@ -82,16 +93,21 @@ module.exports = {
     const { data, where } = event.params;
     const query = { populate: "*" };
 
+    let id = where?.id;
+
     let prevData;
     if (where?.id) {
+
       prevData = await strapi.entityService.findOne(
         "api::user-course.user-course",
-        where.id,
+        id,
         { ...query }
       );
     }
+
     //check data is published or not
     if (!data.publishedAt) {
+
       //check title short desc start date or end date is updated or not
       if (data.user || data.course) {
         if (
@@ -101,16 +117,19 @@ module.exports = {
           (prevData?.course?.id !== data?.course ||
             prevData?.user?.id !== data?.user)
         ) {
+          
           //find course
           const course = await strapi.db
             .query("api::course.course")
-            .findOne({ where: { id: data.course } });
+            .findOne({ where: { id: prevData.course.id } });
+
           //check course has webinarId or not
           if (course && course.webinarId && data.user) {
+
             //find updated user data
             const user = await strapi.db
               .query("plugin::users-permissions.user")
-              .findOne({ where: { id: data.user } });
+              .findOne({ where: { id: prevData.user.id } });
             //delete previous registrant from webinar
             if (prevData.course.webinarId) {
               await strapi
@@ -240,12 +259,12 @@ module.exports = {
 
     try {
       if (status == "Completed") {
-        let emailId ;
-        let courseTitle ;
+        let emailId;
+        let courseTitle;
         let courseId;
         let userId;
-        let surveyLinkDetail="";
-        let surveyLink ;
+        let surveyLinkDetail = "";
+        let surveyLink;
 
         let defaultHtml = `<p>Congratulations! You have successfully completed</p>
             <p style="color: blue";> <%= title %>.</p>
@@ -275,10 +294,10 @@ module.exports = {
           },
         });
         let cc;
-        if(gData.notificationEmail){
-         cc = gData.notificationEmail.split(",") || EMAIL_REPLY_TO;
-        }else{
-          cc =EMAIL_REPLY_TO
+        if (gData.notificationEmail) {
+          cc = gData.notificationEmail.split(",") || EMAIL_REPLY_TO;
+        } else {
+          cc = EMAIL_REPLY_TO
         }
 
 
@@ -300,11 +319,11 @@ module.exports = {
             "plugin::users-permissions.user",
             user,
             {
-              select: ["email","id"],
+              select: ["email", "id"],
             }
           );
 
-          emailId  = userDetail.email;
+          emailId = userDetail.email;
 
           userId = userDetail.id
 
@@ -313,26 +332,26 @@ module.exports = {
             "api::course.course",
             course,
             {
-              select: ["title","id","surveyLink"],
+              select: ["title", "id", "surveyLink"],
             }
           );
 
-           courseTitle   = courseDetail.title;
-           courseId =courseDetail.id;
-           surveyLink = courseDetail.surveyLink;
+          courseTitle = courseDetail.title;
+          courseId = courseDetail.id;
+          surveyLink = courseDetail.surveyLink;
 
         }
-        else if(where.course !=null && where.user!=null){
+        else if (where.course != null && where.user != null) {
           console.log("user course exist", "195");
           const userDetail = await strapi.entityService.findOne(
             "plugin::users-permissions.user",
             where.user,
             {
-              select: ["email","id"],
+              select: ["email", "id"],
             }
           );
 
-          emailId  = userDetail.email;
+          emailId = userDetail.email;
 
           userId = userDetail.id
 
@@ -341,103 +360,102 @@ module.exports = {
             "api::course.course",
             where.course,
             {
-              select: ["title","id","surveyLink"],
+              select: ["title", "id", "surveyLink"],
             }
           );
 
-           courseTitle   = courseDetail.title;
-           courseId =courseDetail.id;
-           surveyLink = courseDetail.surveyLink;
+          courseTitle = courseDetail.title;
+          courseId = courseDetail.id;
+          surveyLink = courseDetail.surveyLink;
 
         }
 
-        else{
+        else {
           const userCourseDetail = await strapi.entityService.findOne(
             "api::user-course.user-course",
             where.id,
             {
-              populate: ["user","course"],
+              populate: ["user", "course"],
             }
           );
 
-         if(userCourseDetail.course !=null  && userCourseDetail.course !=null ){
-           userId = userCourseDetail.user.id;
-           courseId= userCourseDetail.course.id;
-           emailId =userCourseDetail.user.email;
-           courseTitle =userCourseDetail.course.title;
-           surveyLink = userCourseDetail.course.surveyLink;
-         }
+          if (userCourseDetail.course != null && userCourseDetail.course != null) {
+            userId = userCourseDetail.user.id;
+            courseId = userCourseDetail.course.id;
+            emailId = userCourseDetail.user.email;
+            courseTitle = userCourseDetail.course.title;
+            surveyLink = userCourseDetail.course.surveyLink;
+          }
 
         }
-                  if(surveyLink!=null)
-                  {
-                    surveyLinkDetail = `<div style='white-space: pre-line;'><p>We would love to know how we did! Please complete the survey by clicking on the link below. Your responses enable us to improve our product experience and compliance.</p>
+        if (surveyLink != null) {
+          surveyLinkDetail = `<div style='white-space: pre-line;'><p>We would love to know how we did! Please complete the survey by clicking on the link below. Your responses enable us to improve our product experience and compliance.</p>
                     <p><a style=' background-color: blue; color:white;' class="survey-link" href='${surveyLink}'>${surveyLink}</a></p></div>`;
-                  }
+        }
 
-                 // sending email: --
-                 if (certTempData && certTempData[0]?.template?.url != null) {
-                  let subject = certTempData[0].subject;
-                  let certHtmlUrl = `public${certTempData[0]?.template?.url}`;
-                  let certHtml;
+        // sending email: --
+        if (certTempData && certTempData[0]?.template?.url != null) {
+          let subject = certTempData[0].subject;
+          let certHtmlUrl = `public${certTempData[0]?.template?.url}`;
+          let certHtml;
 
-                  fs.readFile(certHtmlUrl, "utf8", function (err, html) {
-                    if (err) {
-                     console.log("err in template reading==>",err );
-                    } else {
-                      // checking template is valid or not
+          fs.readFile(certHtmlUrl, "utf8", function (err, html) {
+            if (err) {
+              console.log("err in template reading==>", err);
+            } else {
+              // checking template is valid or not
 
-                      let check = isValidEmailTemplate(html);
+              let check = isValidEmailTemplate(html);
 
-                      if (check) {
-                        certHtml = html
-                          .replace("{{title}}", "<%= title %>")
-                          .replace("{{surveyLinkDetail}}", "<%= surveyLinkDetail %>")
-                          .replace("{{dashboardLink}}", "<%= DashboardLink %>");
-                        sendEmailWithTemplate(certHtml, subject, courseTitle, emailId, cc, surveyLinkDetail);
-                      } else {
-                        sendEmailWithTemplate(
-                          defaultHtml,
-                          "Certificate Granted – CPE Warehouse",
-                          title,
-                          emailId,
-                          cc,
-                          surveyLinkDetail
-                        );
-                      }
-                    }
-                  });
-                } else {
-                  console.log("emailId",emailId);
-                  sendEmailWithTemplate(
-                    defaultHtml,
-                    "Certificate Granted – CPE Warehouse",
-                    courseTitle,
-                    emailId,
-                    cc,
-                    surveyLinkDetail
-                  );
-                }
+              if (check) {
+                certHtml = html
+                  .replace("{{title}}", "<%= title %>")
+                  .replace("{{surveyLinkDetail}}", "<%= surveyLinkDetail %>")
+                  .replace("{{dashboardLink}}", "<%= DashboardLink %>");
+                sendEmailWithTemplate(certHtml, subject, courseTitle, emailId, cc, surveyLinkDetail);
+              } else {
+                sendEmailWithTemplate(
+                  defaultHtml,
+                  "Certificate Granted – CPE Warehouse",
+                  title,
+                  emailId,
+                  cc,
+                  surveyLinkDetail
+                );
+              }
+            }
+          });
+        } else {
+          console.log("emailId", emailId);
+          sendEmailWithTemplate(
+            defaultHtml,
+            "Certificate Granted – CPE Warehouse",
+            courseTitle,
+            emailId,
+            cc,
+            surveyLinkDetail
+          );
+        }
 
-       // UPDATING CERTIFICATE STATUS IN PURCHASED COURSE TABLE
+        // UPDATING CERTIFICATE STATUS IN PURCHASED COURSE TABLE
 
-       const purchasedCourse = await strapi.db
-       .query("api::purchased-course.purchased-course")
-       .update({
-        data:{
-        certificateStatus: 'Granted'
-        },
-         where: {
-           $and: [
-             {
-               user:userId,
-             },
-             {
-               course:courseId,
-             },
-           ],
-         },
-       });
+        const purchasedCourse = await strapi.db
+          .query("api::purchased-course.purchased-course")
+          .update({
+            data: {
+              certificateStatus: 'Granted'
+            },
+            where: {
+              $and: [
+                {
+                  user: userId,
+                },
+                {
+                  course: courseId,
+                },
+              ],
+            },
+          });
 
 
 
@@ -445,7 +463,7 @@ module.exports = {
         console.log("<==in else==>", "not in use");
       }
     } catch (error) {
-     console.log("Error in afterUpdate userCourse Lifecycle==>",error);
+      console.log("Error in afterUpdate userCourse Lifecycle==>", error);
     }
     console.log("LIFECYCLE>UserCourse>afterUpdate finished");
   },

@@ -14,7 +14,6 @@ const Handlebars = require("handlebars");
 
 module.exports = {
   createDynamicProductCheckoutURL: async (body) => {
-    console.log("body", body);
     var line_of_items = [];
     var customerid = "";
     var coupon = "";
@@ -26,7 +25,6 @@ module.exports = {
     }
 
     body.map(async (item, i) => {
-      console.log("item", item);
       coupon = item.coupon;
       customerid = item.customerid;
       orderid = item.orderId;
@@ -55,8 +53,6 @@ module.exports = {
 
       });
     });
-
-    console.log("line_of_items,", line_of_items);
 
     return new Promise(async (resolve, reject) => {
       createCheckoutLink(line_of_items, coupon, customerid, customerEmail, productDesc, discountCoupon).then(
@@ -95,8 +91,6 @@ module.exports = {
         // );
 
         // Handle the event
-
-        console.log({ event });
 
         //Check payment status
         switch (event.type) {
@@ -258,7 +252,6 @@ module.exports = {
               CLIENT_URL,
               URL
             );
-            console.log("EmailData=>", emdata);
 
             // checking it is exist in DB or not
             for (let userData in enrolledUsers) {
@@ -643,7 +636,7 @@ async function orderConfirmationMail(
   return new Promise(async (resolve, reject) => {
 
     try {
-      let liveDefaultTemp = `   <head>
+      let liveDefaultTemp = `<head>
     <title>hello</title>
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans|Pinyon+Script|Rochester">
@@ -831,12 +824,9 @@ async function orderConfirmationMail(
             width: 40%
         }
     </style>
-
-
 </head>
 
 <body>
-
     <p><b>Thanks for your purchase! Below is a confirmation of your order.</b></p>
 
     <p>Total: $ {{ totalPrice }} (Coupon Applied: {{dCode}})</p>
@@ -845,8 +835,7 @@ async function orderConfirmationMail(
     <table class="tbl">
         <tr>
             <td class="courseimg" style="padding-left:0px;padding-right:20px;">
-                <div class="imgStyle">
-                  
+                <div class="imgStyle">                  
                     <img src="{{URL}}{{this.imageUrl}}" alt="img" style="height:100px;width:100px;">
                 </div>
 
@@ -913,20 +902,15 @@ async function orderConfirmationMail(
       const { socialLinks } = gData;
 
       const { email, discountCode, finalPrice, id } = data;
-      // console.log("data",data);
       let totalPrice;
 
       if (totalAmountPaid > 0 && paymentStatus == 'succeeded') {
-        // console.log("in if stripe",totalAmountPaid);
         totalPrice = totalAmountPaid || finalPrice
       } else {
 
         totalPrice = finalPrice
-        //  console.log("totalAm++",totalPrice);
       }
 
-      // console.log("total price and final price",totalPrice,finalPrice);
-      //totalPrice = finalPrice;
       const items = data.OrderItems;
       const length = items.length;
       const notApplied = "NotApplied";
@@ -940,7 +924,6 @@ async function orderConfirmationMail(
 
 
       // fetching email templates
-
       const orderConfTempData = gData.EmailTemplates.filter((value) => {
         return value.templateName === "orderConfirmation";
       });
@@ -1042,7 +1025,6 @@ async function orderConfirmationMail(
 
       function sendTempEmail(orderConfHtml, subject) {
         try {
-        console.log("OrderConfirmation Mail Sending...." + "subject=>", subject);
         
         let orderData = {
           items,
@@ -1064,44 +1046,19 @@ async function orderConfirmationMail(
           replyTo: EMAIL_REPLY_TO,
           from: EMAIL_FROM,
           subject: subject,
+          cc,
           html: orderEmail(orderConfHtml, orderData),
         });
 
-        // strapi.plugins["email"].services.email.sendTemplatedEmail(
-        //   {
-        //     to: email,
-        //     replyTo: EMAIL_REPLY_TO,
-        //     from: EMAIL_FROM,
-        //     cc: cc,
-        //     // bcc:cc,
-        //     // from: is not specified, so it's the defaultFrom that will be used instead
-        //   },
-        //   emailTemplate,
-        //   {
-        //     items,
-        //     email,
-        //     CLIENT_URL,
-        //     length,
-        //     totalPrice,
-        //     dCode,
-        //     notApplied,
-        //     socialLinks,
-        //     URL,
-        //     DashboardLink,
-        //   }
-        // );
-        console.log(" OrderConfirmation Mail Sent");
         } catch (error) {
           console.log("error=>", error);
         }
 
       }
-      // console.log("console...991");
       resolve('Resolve=>Email Sent')
     } catch (error) {
       console.log("error email", error);
       reject("Error while Sending Mail");
-      //resolve('Resolve=>Email Sent')
     }
   })
 
@@ -1122,7 +1079,6 @@ async function loginCredentialMail(
         id: 1,
       },
       populate: {
-        //  socialLinks: true,
         EmailTemplates: {
           populate: {
             template: true,
@@ -1157,7 +1113,6 @@ async function loginCredentialMail(
     }
 
     function sendTempEmail(logCredHtml, subject) {
-      console.log("Log In Cred Mail sending...");
       const emailTemplate = {
         subject: subject,
         text: "text",
@@ -1190,16 +1145,11 @@ async function loginCredentialMail(
 // purchasedCourse table
 
 async function savePurchasedDetails(orderEntry) {
-  console.log("purchaseCourse Entry Creating.....");
   try {
-    //console.log("userCourse", orderEntry);
-    if (orderEntry) {
-
-
+     if (orderEntry) {
       // calling the course and package api
       if (orderEntry.OrderItems.length != 0) {
         orderEntry.OrderItems.map(async (data) => {
-          // console.log("data", data);
           if (data.courseId != 0) {
             let userData;
             const courseData = await strapi.db
@@ -1213,7 +1163,6 @@ async function savePurchasedDetails(orderEntry) {
               });
 
             data.Enrolls.map(async (enroll) => {
-              console.log("enroll in courses", enroll);
               const userEmail = enroll.email;
 
               // finding user email from enrolls and finding user data
@@ -1225,12 +1174,10 @@ async function savePurchasedDetails(orderEntry) {
                   },
                   select: ["id", "email"],
                 });
-              // console.log("userData", userData);
               if (courseData && userData) {
                 const isPackage = false;
 
                 createPurchaseItems(userData, courseData, data, isPackage);
-                console.log("course creation in purchase detail");
               }
             });
           } else {
@@ -1246,7 +1193,6 @@ async function savePurchasedDetails(orderEntry) {
               });
 
             data.Enrolls.map(async (enroll) => {
-              console.log("enroll in package", enroll);
               const userEmail = enroll.email;
 
               // finding user email from enrolls and finding user data
@@ -1262,7 +1208,6 @@ async function savePurchasedDetails(orderEntry) {
               if (packageData && userData) {
                 const isPackage = true;
                 createPurchaseItems(userData, packageData, data, isPackage);
-                console.log("package creation in purchase detail");
               }
             });
           }
@@ -1276,14 +1221,7 @@ async function savePurchasedDetails(orderEntry) {
       orderItems,
       isPackage
     ) {
-      // console.log(
-      //   "user",
-      //   userData,
-      //   "order",
-      //   orderItems,
-      //   "itemsData",
-      //   itemsData
-      // );
+    
       let data = {
         user: userData?.id,
         userEmail: userData?.email,
@@ -1303,11 +1241,6 @@ async function savePurchasedDetails(orderEntry) {
         programNumber: itemsData?.programNumber || "",
         discountCode: orderEntry?.discountCode || "",
         publishedAt: new Date(),
-        // faculty: !isPackage
-        //   ? (itemsData.instructor?.firstName || "") +
-        //     " " +
-        //     (itemsData.instructor?.lastName || "")
-        //   : "",
         order: orderEntry?.id,
         couponValue: orderEntry?.discountPrice,
         couponType: orderEntry?.discountType,
@@ -1319,10 +1252,8 @@ async function savePurchasedDetails(orderEntry) {
       } else {
         data.course = itemsData?.id;
 
-        console.log("itemData", itemsData.instructors);
         let name = [];
         let instructorName;
-
 
         if (itemsData.instructors.length > 1) {
           itemsData.instructors.forEach((element) => {
@@ -1347,62 +1278,15 @@ async function savePurchasedDetails(orderEntry) {
           data,
         });
 
-      // console.log("purchased Details Entry", entry);
     }
   } catch (error) {
     console.log("Error In SavePurchaseDetails=>", error);
   }
-
-
-
-
-
-  // calling  the course api
-  //  if(userCourse && orderEntry){
-
-  //  const courseData = await strapi.db
-  //  .query("api::course.course")
-  //  .findOne({
-  //    where: {
-  //      id: userCourse.course
-  //    },
-
-  //    populate: ["instructor", "category" ],
-
-  //  });
-
-  //  console.log("order Entry");
-  //  //calling the userapi
-  //  const userData = await strapi.db
-  //  .query("plugin::users-permissions.user")
-  //  .findOne({
-  //    where: {
-  //      id: userCourse.user
-  //    },
-  //    select:['email']
-
-  //  });
-
-  // // creating entry in purchased table
-
-  // let orderItemsLength = orderEntry.OrderItems.length;
-  // if( userData && courseData){
-  //     let netAmount ;
-  //     if(orderEntry.discountCode && orderEntry.discountType =='percentOff'){
-  //       netAmount = (courseData.discount || courseData.price) - ((courseData.discount || courseData.price)*orderEntry.discountPrice)/100
-  //     }else if(orderEntry.discountCode && orderEntry.discountType =='amountOff'){
-  //       netAmount = (courseData.discount || courseData.price) - (orderEntry.discountPrice/orderItemsLength)
-  //     }
-  //     else{
-  //       netAmount = courseData.discount || courseData.price ;
-  //     }
-  console.log("purchaseCourse Entry Created");
 }
 async function updateDiscountCoupon(id, noOfRedemption) {
   const entry = await strapi.entityService.update('api::discount-coupon.discount-coupon', id, {
     data: {
       noOfRedemption: noOfRedemption + 1,
-
     }
   })
 

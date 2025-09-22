@@ -19,7 +19,6 @@ module.exports = {
     try {
       const event = ctx.request.body;
       const data = await strapi.service('api::checkout.checkout').orderUpdateService(ctx);
-      console.log({data});
       ctx.body = data;
     } catch (err) {
       ctx.body = err;
