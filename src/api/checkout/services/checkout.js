@@ -1041,7 +1041,6 @@ async function orderConfirmationMail(
         }
 
         strapi.plugin("email").service("email").send({
-          to: user.email,
           to: email,
           replyTo: EMAIL_REPLY_TO,
           from: EMAIL_FROM,
