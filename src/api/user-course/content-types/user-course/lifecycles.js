@@ -2,7 +2,9 @@ const { ValidationError } = require("@strapi/utils").errors;
 const moment = require("moment");
 const currentDate = moment().format("YYYY-MM-DD HH:mm:ss");
 const fs = require("fs");
+const Handlebars = require("handlebars");
 var { CLIENT_URL, EMAIL_REPLY_TO, EMAIL_FROM } = process.env;
+
 module.exports = {
   async beforeCreate(event) {
 
@@ -88,141 +90,154 @@ module.exports = {
   },
 
   async beforeUpdate(event) {
-    console.log("LIFECYCLE>UserCourse>beforeUpdate ", event.params);
+    // console.log("LIFECYCLE>UserCourse>beforeUpdate ", event.params);
 
-    const { data, where } = event.params;
-    const query = { populate: "*" };
+    // const { data, where } = event.params;
+    // const query = { populate: "*" };
 
-    let id = where?.id;
+    // let id = where?.id;
 
-    let prevData;
-    if (where?.id) {
+    // let prevData;
+    // if (where?.id) {
 
-      prevData = await strapi.entityService.findOne(
-        "api::user-course.user-course",
-        id,
-        { ...query }
-      );
-    }
+    //   prevData = await strapi.entityService.findOne(
+    //     "api::user-course.user-course",
+    //     id,
+    //     { ...query }
+    //   );
+    // }
 
-    //check data is published or not
-    if (!data.publishedAt) {
+    // //check data is published or not
+    // if (!data.publishedAt) {
 
-      //check title short desc start date or end date is updated or not
-      if (data.user || data.course) {
-        if (
-          prevData &&
-          data.course &&
-          prevData?.course &&
-          (prevData?.course?.id !== data?.course ||
-            prevData?.user?.id !== data?.user)
-        ) {
-          
-          //find course
-          const course = await strapi.db
-            .query("api::course.course")
-            .findOne({ where: { id: prevData.course.id } });
+    //   //check title short desc start date or end date is updated or not
+    //   if (data.user || data.course) {
+    //     if (
+    //       prevData &&
+    //       data.course &&
+    //       prevData?.course &&
+    //       (prevData?.course?.id !== data?.course ||
+    //         prevData?.user?.id !== data?.user)
+    //     ) {
 
-          //check course has webinarId or not
-          if (course && course.webinarId && data.user) {
+    //       //find course
+    //       const course = await strapi.db
+    //         .query("api::course.course")
+    //         .findOne({ where: { id: prevData.course.id } });
 
-            //find updated user data
-            const user = await strapi.db
-              .query("plugin::users-permissions.user")
-              .findOne({ where: { id: prevData.user.id } });
-            //delete previous registrant from webinar
-            if (prevData.course.webinarId) {
-              await strapi
-                .service("api::user-course.user-course")
-                .deleteRegistrant(
-                  prevData.course.webinarId,
-                  prevData.registrantKey,
-                  course.zoomAccount
-                );
-            }
-            //check end date is before current date and end date is before start date or not
-            if (
-              moment(currentDate).isSameOrBefore(
-                moment(course.endDate).format("YYYY-MM-DD HH:mm:ss")
-              ) &&
-              moment(course.startDate).isSameOrBefore(
-                moment(course.endDate).format("YYYY-MM-DD HH:mm:ss")
-              )
-            ) {
-              //create registrant for new user
-              const registrant = await strapi
-                .service("api::user-course.user-course")
-                .createRegistraint(data.course, user);
-              if (registrant.joinUrl) {
-                data.joinUrl = registrant.joinUrl;
-                data.registrantKey = registrant.registrantKey;
-              }
-              //If user already registred then throw error
-              else {
-                throw new ValidationError("User already registered");
-              }
-            }
-          } else {
-            //check end date is before current date and end date is before start date or not
-            if (
-              moment(currentDate).isSameOrBefore(
-                moment(course.endDate).format("YYYY-MM-DD HH:mm:ss")
-              ) &&
-              moment(course.startDate).isSameOrBefore(
-                moment(course.endDate).format("YYYY-MM-DD HH:mm:ss") && course
-              )
-            ) {
-              //if course does not have webinarid then create webinar
-              let webinarData = await strapi
-                .service("api::user-course.user-course")
-                .createWebinar(course);
-              if (webinarData.id && data.user) {
-                try {
-                  data.webinarId = webinarData.id;
-                  //update webinarid in course
-                  await strapi.db.query("api::course.course").update({
-                    where: { id: course.id },
-                    data: { webinarId: webinarData.id },
-                  });
-                  const user = await strapi.db
-                    .query("plugin::users-permissions.user")
-                    .findOne({ where: { id: data.user } });
-                  //delete registrant and create new for new course
-                  if (prevData.course.webinarId && prevData.registrantKey) {
-                    await strapi
-                      .service("api::user-course.user-course")
-                      .deleteRegistrant(
-                        prevData.course.webinarId,
-                        prevData.registrantKey,
-                        course.zoomAccount
-                      );
-                  }
-                  let registrant;
-                  if (data.course && user) {
-                    registrant = await strapi
-                      .service("api::user-course.user-course")
-                      .createRegistraint(data.course, user);
-                  }
-                  if (registrant.joinUrl) {
-                    data.joinUrl = registrant.joinUrl;
-                    data.registrantKey = registrant.registrantKey;
-                  } else {
-                    throw new ValidationError("User already registered");
-                  }
-                } catch (error) {
-                  console.log(error);
-                  throw new ValidationError("User already registered");
-                }
-              }
-            } else {
-              data.joinUrl = "";
-              data.registrantKey = "";
-            }
-          }
-        }
-      }
-    }
-    console.log("LIFECYCLE>UserCourse>beforeUpdate finished");
+    //       //check course has webinarId or not
+    //       if (course && course.webinarId && data.user) {
+
+    //         //find updated user data
+    //         const user = await strapi.db
+    //           .query("plugin::users-permissions.user")
+    //           .findOne({ where: { id: prevData.user.id } });
+
+    //         //delete previous registrant from webinar
+    //         if (prevData.course.webinarId) {
+    //           await strapi
+    //             .service("api::user-course.user-course")
+    //             .deleteRegistrant(
+    //               prevData.course.webinarId,
+    //               prevData.registrantKey,
+    //               course.zoomAccount
+    //             );
+    //         }
+
+    //         //check end date is before current date and end date is before start date or not
+    //         if (
+    //           moment(currentDate).isSameOrBefore(
+    //             moment(course.endDate).format("YYYY-MM-DD HH:mm:ss")
+    //           ) &&
+    //           moment(course.startDate).isSameOrBefore(
+    //             moment(course.endDate).format("YYYY-MM-DD HH:mm:ss")
+    //           )
+    //         ) {              
+
+    //           let courseID = data.course;
+    //           if (typeof data.course === "object" && "connect" in data.course) {
+    //             courseID = course.id;
+    //           }
+
+    //           //create registrant for new user
+    //           const registrant = await strapi
+    //             .service("api::user-course.user-course")
+    //             .createRegistraint(courseID, user);
+
+    //           console.log(registrant);
+              
+    //           if (registrant?.joinUrl) {
+    //             data.joinUrl = registrant?.joinUrl;
+    //             data.registrantKey = registrant?.registrantKey;
+    //           } else {
+    //             throw new ValidationError("User already registered");
+    //           }
+    //         }
+
+    //       } else {
+    //         //check end date is before current date and end date is before start date or not
+    //         if (
+    //           moment(currentDate).isSameOrBefore(
+    //             moment(course.endDate).format("YYYY-MM-DD HH:mm:ss")
+    //           ) &&
+    //           moment(course.startDate).isSameOrBefore(
+    //             moment(course.endDate).format("YYYY-MM-DD HH:mm:ss") && course
+    //           )
+    //         ) {
+    //           // if course does not have webinarid then create webinar
+    //           let webinarData = await strapi
+    //             .service("api::user-course.user-course")
+    //             .createWebinar(course);
+    //           if (webinarData.id && data.user) {
+    //             try {
+    //               data.webinarId = webinarData.id;
+    //               //update webinarid in course
+    //               await strapi.db.query("api::course.course").update({
+    //                 where: { id: course.id },
+    //                 data: { webinarId: webinarData.id },
+    //               });
+    //               const user = await strapi.db
+    //                 .query("plugin::users-permissions.user")
+    //                 .findOne({ where: { id: data.user } });
+    //               //delete registrant and create new for new course
+    //               if (prevData.course.webinarId && prevData.registrantKey) {
+    //                 await strapi
+    //                   .service("api::user-course.user-course")
+    //                   .deleteRegistrant(
+    //                     prevData.course.webinarId,
+    //                     prevData.registrantKey,
+    //                     course.zoomAccount
+    //                   );
+    //               }
+
+    //               let registrant;
+    //               if (data.course && user) {
+    //                 registrant = await strapi
+    //                   .service("api::user-course.user-course")
+    //                   .createRegistraint(data.course, user);
+    //               }
+    //               if (registrant.joinUrl) {
+    //                 data.joinUrl = registrant.joinUrl;
+    //                 data.registrantKey = registrant.registrantKey;
+
+    //               } else {
+    //                 throw new ValidationError("User already registered");
+    //               }
+    //             } catch (error) {
+    //               console.log(error);
+    //               throw new ValidationError("User already registered");
+    //             }
+    //           }
+    //         } else {
+    //           data.joinUrl = "";
+    //           data.registrantKey = "";
+    //         }
+    //       }
+
+    //     }
+    //   }
+    // }
+    // console.log("LIFECYCLE>UserCourse>beforeUpdate finished");
   },
 
   async beforeDelete(event) {
@@ -255,9 +270,15 @@ module.exports = {
     console.log("LIFECYCLE>UserCourse>afterUpdate ", event.params);
     const { data } = event.params;
     const { where } = event.params;
-    const { user, course, status } = data;
+    const { status } = data;
 
     try {
+      const userCourse = await strapi.db
+        .query("api::user-course.user-course")
+        .findOne({ where: { id: where.id }, populate: ["course", "user"] });
+
+      const { course, user } = userCourse;
+
       if (status == "Completed") {
         let emailId;
         let courseTitle;
@@ -267,12 +288,12 @@ module.exports = {
         let surveyLink;
 
         let defaultHtml = `<p>Congratulations! You have successfully completed</p>
-            <p style="color: blue";> <%= title %>.</p>
-            <p><%= surveyLinkDetail %></p>
+            <p style="color: blue";> {{title}}.</p>
+            <p>{{ surveyLinkDetail }}</p>
    <p> Log-in to your dashboard below to download your certificate.</p>
 
 
-   <p ><a style=" background-color: blue; color:white;"  href="<%=DashboardLink%>">DASHBOARD<a/></p>
+   <p ><a style=" background-color: blue; color:white;"  href="{{DashboardLink}}">DASHBOARD<a/></p>
 
    <p>Reply to this email if you have any questions.</p>
 
@@ -308,16 +329,16 @@ module.exports = {
 
         // finding userCourse
 
-
         // reading the html file from url
 
         // finding related user
 
         if (user && course) {
           console.log("user course exist", "195");
+
           const userDetail = await strapi.entityService.findOne(
             "plugin::users-permissions.user",
-            user,
+            user?.id,
             {
               select: ["email", "id"],
             }
@@ -327,10 +348,13 @@ module.exports = {
 
           userId = userDetail.id
 
+          console.log(course);
+
+
           // finding related course
           const courseDetail = await strapi.entityService.findOne(
             "api::course.course",
-            course,
+            course.id,
             {
               select: ["title", "id", "surveyLink"],
             }
@@ -339,13 +363,12 @@ module.exports = {
           courseTitle = courseDetail.title;
           courseId = courseDetail.id;
           surveyLink = courseDetail.surveyLink;
-
         }
         else if (where.course != null && where.user != null) {
           console.log("user course exist", "195");
           const userDetail = await strapi.entityService.findOne(
             "plugin::users-permissions.user",
-            where.user,
+            user?.id,
             {
               select: ["email", "id"],
             }
@@ -358,7 +381,7 @@ module.exports = {
           // finding related course
           const courseDetail = await strapi.entityService.findOne(
             "api::course.course",
-            where.course,
+            course?.id,
             {
               select: ["title", "id", "surveyLink"],
             }
@@ -367,7 +390,6 @@ module.exports = {
           courseTitle = courseDetail.title;
           courseId = courseDetail.id;
           surveyLink = courseDetail.surveyLink;
-
         }
 
         else {
@@ -409,9 +431,9 @@ module.exports = {
 
               if (check) {
                 certHtml = html
-                  .replace("{{title}}", "<%= title %>")
-                  .replace("{{surveyLinkDetail}}", "<%= surveyLinkDetail %>")
-                  .replace("{{dashboardLink}}", "<%= DashboardLink %>");
+                  .replace("{{title}}", "{{title}}")
+                  .replace("{{surveyLinkDetail}}", "{{surveyLinkDetail}}")
+                  .replace("{{dashboardLink}}", "{{DashboardLink}}");
                 sendEmailWithTemplate(certHtml, subject, courseTitle, emailId, cc, surveyLinkDetail);
               } else {
                 sendEmailWithTemplate(
@@ -456,8 +478,6 @@ module.exports = {
               ],
             },
           });
-
-
 
       } else {
         console.log("<==in else==>", "not in use");
@@ -530,39 +550,63 @@ async function checkUserCourseExist(user, course) {
       },
     });
 
-  if (courseExist) {
+  if (false) {
     throw new ValidationError("User Already have this course");
   } else {
     return true;
   }
 }
 
+function orderEmail(orderTemplate, data) {
+  const template = Handlebars.compile(orderTemplate);
+  return template(data); // injects values + loops
+}
+
 function sendEmailWithTemplate(certHtml, subject, title, email, cc, surveyLinkDetail) {
   console.log("Certificate Issues Mail Sending....");
+  console.log(CLIENT_URL);
+  
   let DashboardLink = `${CLIENT_URL}/learner/dashboard`;
 
-  const emailTemplate = {
-    subject: subject,
-    text: "text",
-    html: certHtml,
-  };
-  const emailRes = strapi.plugins["email"].services.email.sendTemplatedEmail(
-    {
-      to: email,
-      replyTo: EMAIL_REPLY_TO,
-      from: EMAIL_FROM,
-      cc: cc,
-      //bcc:BCC_EMAIL || 'cpewarehouses@gmail.com',
+  // const emailTemplate = {
+  //   subject: subject,
+  //   text: "text",
+  //   html: certHtml,
+  // };
 
-      // from: is not specified, so it's the defaultFrom that will be used instead
-    },
-    emailTemplate,
-    {
-      title,
-      surveyLinkDetail,
-      DashboardLink,
-    }
-  );
+  let certficateData = {
+    title,
+    surveyLinkDetail,
+    DashboardLink,
+  }
+
+
+  strapi.plugin("email").service("email").send({
+    to: email,
+    replyTo: EMAIL_REPLY_TO,
+    from: EMAIL_FROM,
+    subject: subject,
+    cc,
+    html: orderEmail(certHtml, certficateData),
+  });
+
+  // const emailRes = strapi.plugins["email"].services.email.sendTemplatedEmail(
+  //   {
+  //     to: email,
+  //     replyTo: EMAIL_REPLY_TO,
+  //     from: EMAIL_FROM,
+  //     cc: cc,
+  //     //bcc:BCC_EMAIL || 'cpewarehouses@gmail.com',
+
+  //     // from: is not specified, so it's the defaultFrom that will be used instead
+  //   },
+  //   emailTemplate,
+  //   {
+  //     title,
+  //     surveyLinkDetail,
+  //     DashboardLink,
+  //   }
+  // );
   console.log("Certificate Issues Mail Sent.");
 }
 

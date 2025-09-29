@@ -15,17 +15,17 @@ module.exports = createCoreService(
   ({ strapi }) => ({
     //Generate Access Token with Username and password
     generateAccessToken: async (zoomAccount) => {
-      
+
       console.log("Selected Zoom Account:", zoomAccount);
-    
+
       // Fetch global GTM data
       const gData = await strapi.db.query("api::global.global").findOne({
         where: { id: 1 },
         select: ["gtmPassword"],
       });
-    
+
       const gtmPassword = gData.gtmPassword || null;
-    
+
       // Determine Zoom credentials based on the zoomAccount value
       // const zoomCredentials = {
       //   clientId: zoomAccount === "zoom_account_1" ? process.env.ZOOM_CLIENT_ID_1 : process.env.ZOOM_CLIENT_ID_2,
@@ -34,16 +34,11 @@ module.exports = createCoreService(
       // };
 
       const zoomCredentials = {
-        clientId:  process.env.ZOOM_CLIENT_ID,
+        clientId: process.env.ZOOM_CLIENT_ID,
         clientSecret: process.env.ZOOM_CLIENT_SECRET,
         accountId: process.env.ZOOM_ACCOUNT_ID,
       };
-    
-      console.log("Using Zoom Credentials:", zoomCredentials);
 
-      console.log(`Basic ${Buffer.from(`${zoomCredentials.clientId}:${zoomCredentials.clientSecret}`).toString('base64')}`);
-      
-    
       // Configure request options for token generation
       const config = {
         method: "post",
@@ -53,7 +48,7 @@ module.exports = createCoreService(
           Authorization: `Basic ${Buffer.from(`${zoomCredentials.clientId}:${zoomCredentials.clientSecret}`).toString('base64')}`,
         },
       };
-    
+
       try {
         const response = await axios(config);
         console.log("Access Token Generated:", response.data.access_token);
@@ -63,7 +58,7 @@ module.exports = createCoreService(
         throw error; // Re-throw error for higher-level handling if necessary
       }
     },
-    
+
     // Helper function to format date for Zoom API
     formatDateToZoom: (date) => {
       return moment(date).tz("America/New_York").format("YYYY-MM-DDTHH:mm:ss");
@@ -80,12 +75,12 @@ module.exports = createCoreService(
       return new Promise(async (resolve, reject) => {
         try {
           // Logging ctx.startDate and ctx.endDate before conversion
-          console.log("Raw ctx.startDate: ", ctx.startDate, " Raw ctx.endDate: ", ctx.endDate, "   Raw ctx.zoomAccount  : ",ctx.zoomAccount);
+          console.log("Raw ctx.startDate: ", ctx.startDate, " Raw ctx.endDate: ", ctx.endDate, "   Raw ctx.zoomAccount  : ", ctx.zoomAccount);
           let shortDescText = ctx.title;
           if (ctx.shortDesc) {
             shortDescText = convert(ctx.shortDesc, { wordwrap: 130 })
           }
-        
+
           let currentDate = moment(); // Current date and time as a moment object
 
           // Parse and convert start date and end date to ET timezone
@@ -98,13 +93,13 @@ module.exports = createCoreService(
           if (
             currentDate.isSameOrBefore(endDateET) &&  // Check if current date is before or equal to endDate
             startDateET.isSameOrBefore(endDateET)       // Check if startDate is before or equal to endDate
-          ){
+          ) {
             const accessToken = await strapi
               .service("api::user-course.user-course")
               .generateAccessToken(ctx.zoomAccount);
             // calculate diffence in minutes between start date and end date times
             let diffInMinutes = strapi.service("api::user-course.user-course").calculateDurationInMinutes(startDateET, endDateET);
-            console.log(" startDateET : ",startDateET," endDateET : ",endDateET, " diffInMinutes : ",diffInMinutes);
+            console.log(" startDateET : ", startDateET, " endDateET : ", endDateET, " diffInMinutes : ", diffInMinutes);
             let options = {
               method: "POST",
               url: `https://api.zoom.us/v2/users/me/webinars`,
@@ -113,12 +108,12 @@ module.exports = createCoreService(
                 "content-type": "application/json",
               },
               data: {
-                agenda : shortDescText,
+                agenda: shortDescText,
                 start_time: startDateET.format("YYYY-MM-DDTHH:mm:ss"), // Send formatted start date in ET
                 timezone: "America/New_York", // Specify ET timezone
-                topic : ctx.title,
-                type : 5,
-                duration : diffInMinutes,
+                topic: ctx.title,
+                type: 5,
+                duration: diffInMinutes,
                 settings: {
                   approval_type: 0,
                   attendees_and_panelists_reminder_email_notification: {
@@ -155,7 +150,6 @@ module.exports = createCoreService(
 
     // For Create Registraint
     createRegistraint: async (courseId, userData) => {
-
       return new Promise(async (resolve, reject) => {
         try {
           const course = await strapi.db.query("api::course.course").findOne({
@@ -167,11 +161,6 @@ module.exports = createCoreService(
           const accessToken = await strapi
             .service("api::user-course.user-course")
             .generateAccessToken(course.zoomAccount);
-          
-          // console.log("accessToken:::::::", accessToken);
-          // const tokenData = await strapi.db.query("api::token.token").findMany();
-          //let regUrl = `https://api.getgo.com/G2W/rest/v2/organizers/${process.env.OAUTH_ORGANIZER_KEY}/webinars/${course.webinarId}/registrants`;
-
 
           let options = {
             method: "POST",
@@ -182,7 +171,7 @@ module.exports = createCoreService(
               "content-type": "application/json",
             },
             data: {
-              first_name : userData.firstName,
+              first_name: userData.firstName,
               last_name: userData.lastName,
               email: userData.email,
             }
@@ -193,7 +182,7 @@ module.exports = createCoreService(
             .then(function (response) {
               console.log("-----create registerants response----   :   ", response);
               resolve(response.data);
-              console.log("registrant added", response.data);
+              // console.log("registrant added", response.data);
             })
             .catch(function (error) {
               console.log("registrant error", error);
@@ -239,12 +228,12 @@ module.exports = createCoreService(
               "content-type": "application/json",
             },
             data: {
-              agenda : shortDescText,
+              agenda: shortDescText,
               start_time: startDateET.format("YYYY-MM-DDTHH:mm:ss"), // Send start time in ET
               timezone: "America/New_York", // Specify the ET timezone
-              topic : course.title,
-              type : 5,
-              duration : diffInMinutes,
+              topic: course.title,
+              type: 5,
+              duration: diffInMinutes,
               settings: {
                 approval_type: 0,
                 attendees_and_panelists_reminder_email_notification: {
@@ -283,6 +272,7 @@ module.exports = createCoreService(
           const accessToken = await strapi
             .service("api::user-course.user-course")
             .generateAccessToken(zoomAccount);
+
           let options = {
             method: "DELETE",
             url: `https://api.zoom.us/v2/webinars/${webinarId}`,
@@ -330,17 +320,16 @@ module.exports = createCoreService(
             .request(options)
             .then(function (response) {
               resolve(response.data);
-              // console.log(response.data);
+              console.log(response.data);
             })
             .catch(function (error) {
-              reject(error);
               console.error(error);
+              reject(error);
             });
         } catch (error) {
           console.log(error);
         }
       });
     },
-
   })
 );

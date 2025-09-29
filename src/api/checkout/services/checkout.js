@@ -836,7 +836,7 @@ async function orderConfirmationMail(
         <tr>
             <td class="courseimg" style="padding-left:0px;padding-right:20px;">
                 <div class="imgStyle">                  
-                    <img src="{{URL}}{{this.imageUrl}}" alt="img" style="height:100px;width:100px;">
+                    <img src="${URL}{{this.imageUrl}}" alt="img" style="height:100px;width:100px;">
                 </div>
 
             </td>
@@ -949,8 +949,12 @@ async function orderConfirmationMail(
                   "{{#each items }}"
                 )
                 .replace(
-                  "{{baseURL}}{{imageUrl}}",
-                  "{{URL}}{{this.imageUrl}}"
+                  "{{baseURL}}",
+                  URL
+                )
+                .replace(
+                  "{{imageUrl}}",
+                  "{{this.imageUrl}}"
                 )
                 .replace("{{title}}", "{{this.title}}")
                 .replace("{{discountCode}}", "{{dCode}}")
@@ -1025,29 +1029,30 @@ async function orderConfirmationMail(
 
       function sendTempEmail(orderConfHtml, subject) {
         try {
-        
-        let orderData = {
-          items,
-          email,
-          CLIENT_URL,
-          length,
-          totalPrice: (Math.round(totalPrice * 100) / 100).toFixed(2),
-          dCode,
-          notApplied,
-          socialLinks,
-          URL,
-          imageURL : process.env.URL + "/",
-          DashboardLink,
-        }
 
-        strapi.plugin("email").service("email").send({
-          to: email,
-          replyTo: EMAIL_REPLY_TO,
-          from: EMAIL_FROM,
-          subject: subject,
-          cc,
-          html: orderEmail(orderConfHtml, orderData),
-        });
+          let orderData = {
+            items,
+            email,
+            CLIENT_URL,
+            length,
+            totalPrice: (Math.round(totalPrice * 100) / 100).toFixed(2),
+            dCode,
+            notApplied,
+            socialLinks,
+            URL,
+            DashboardLink,
+          }
+
+          // console.log(orderEmail(orderConfHtml, orderData));
+
+          strapi.plugin("email").service("email").send({
+            to: email,
+            replyTo: EMAIL_REPLY_TO,
+            from: EMAIL_FROM,
+            subject: subject,
+            cc,
+            html: orderEmail(orderConfHtml, orderData),
+          });
 
         } catch (error) {
           console.log("error=>", error);
@@ -1145,7 +1150,7 @@ async function loginCredentialMail(
 
 async function savePurchasedDetails(orderEntry) {
   try {
-     if (orderEntry) {
+    if (orderEntry) {
       // calling the course and package api
       if (orderEntry.OrderItems.length != 0) {
         orderEntry.OrderItems.map(async (data) => {
@@ -1220,7 +1225,7 @@ async function savePurchasedDetails(orderEntry) {
       orderItems,
       isPackage
     ) {
-    
+
       let data = {
         user: userData?.id,
         userEmail: userData?.email,
