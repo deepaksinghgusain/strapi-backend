@@ -127,7 +127,14 @@ module.exports = {
 
         //  UPDATE ORDER AFTER PAYMENT
         try {
-          const charge = await fetchStripeCharge(event);
+
+          let charge = {
+            receipt_url: ""
+          };
+          if (event?.data?.price > 0) {
+            let charge = await fetchStripeCharge(event);
+          }
+          
           // await strapi.db.connection.transaction(async (transacting) => {
           //update in order table
 
