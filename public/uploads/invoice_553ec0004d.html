@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+</head>
+
+<body>
+    <div style="position: relative;	width: 595px; height:880px">
+        <div id="topDiv"
+            style="position:relative;display: inline-block;padding-left: 40px; padding-right: 40px; background-color: #d9d9d9;">
+            <table style=" background-repeat: no-repeat;width: 515px;font-family: 'TiltPrism';  ">
+                <tr>
+                    <td style="padding-top: 20px;padding-bottom: 20px;"><img width="250px"
+                            src="../../../../../assets/params/images/invoice_Template/logo.png"></td>
+                </tr>
+                <tr style="border-bottom:1px solid white">
+                    <td colspan="100%"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <h6>Thank you for your purchase!</h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 12px;line-height: 18px; font-weight: bold; text-align: left; color:#000000;">
+                        <div class="row">
+                            <div style="float: left;
+							width: 60%;
+							height: 20px;">
+                                <span>Name: {{userName}}</span>
+                            </div>
+                            <div style="float: left;
+							width: 40%;
+							height: 20px;">
+                                <span>Invoice No: {{invoiceNo}}</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 12px;line-height: 18px; font-weight: bold; text-align: left; color:#000000;">
+                        <div class="row">
+                            <div style="float: left;
+							width: 60%;							
+							height: 20px;">
+                                <span>Address: {{address}}</span>
+                            </div>
+                            <div style="float: left;
+							width: 40%;							
+							height: 20px;">
+                                <span>Invoice Date: {{invoiceDate}}</span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 12px; color: #303030; font-weight: 200; text-align: center;">
+                        <table
+                            style="width: 505px; text-align: center; border: 1px solid black; border-collapse: collapse;">
+                            <tr style="border-bottom: 1px solid grey; font-weight: bold;">
+                                <td style="text-align: left; width: 303px; padding: 8px; vertical-align: middle;">Course
+                                    Description</td>
+                                <td style="padding: 8px; vertical-align: middle;">Quantity</td>
+                                <td style="padding: 8px; vertical-align: middle;">Price</td>
+                                <td style="padding: 8px; vertical-align: middle;">Discount</td>
+                                <td style="padding: 8px; vertical-align: middle;">Total</td>
+                            </tr>
+
+                            {{htmlContentforInvoiceItems}}
+
+                            <tr style="border-top: 1px solid grey; font-weight: bold;font-size: 10px;">
+                                <td style="text-align: left; padding: 8px 10px; vertical-align: middle;">Total</td>
+                                <td style="padding: 8px; vertical-align: middle;">{{totalQty}}</td>
+                                <td style="padding: 8px; vertical-align: middle;">$ {{totalPrice}}</td>
+                                <td style="padding: 8px; vertical-align: middle;">$ {{totalDiscount}}</td>
+                                <td style="padding: 8px; vertical-align: middle;">$ {{finalPrice}}</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td
+                        style="padding-bottom: 10px; font-size: 12px;color: #000000;padding-top: 10px;line-height: 14px; font-weight: bold;text-align: left;">
+                        SEE BELOW FOR IMPORTANT INFORMATION RELATED TO YOUR PURCHASE:</td>
+                </tr>
+            </table>
+        </div>
+        <div style="position:relative;display: inline-block;padding-left: 40px; padding-right: 40px;">
+            <table style="background-repeat: no-repeat;width: 515px;font-family: arial;">
+                <tr>
+                    <td style="font-size: 12px;line-height: 18px; font-weight: bold; text-align: left; color:darkblue;">
+                        <span>Invoice</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 12px;line-height: 18px; text-align: left; margin-bottom: 10px;">
+                        <ul>
+                            <li>Access your invoice by clicking <a
+                                    href="https://cmeavenue.com/learner/dashboard">Learner Dashboard</a> button
+                                below.
+                            </li>
+                            <li>Your credit card statement will show Asterid Group Inc., which is the parent company of
+                                CPE Warehouse.
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr style="border-bottom:1px solid black;margin-top: 5px;margin-bottom: 5px;">
+                    <td colspan="100%"></td>
+                </tr>
+                <tr>
+                    <td style="font-size: 12px;line-height: 18px; font-weight: bold; text-align: center; ">
+                        <span>LIVE EVENT ATTENDEES</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td
+                        style="font-size: 12px;line-height: 18px; margin-top: 8px;margin-bottom: 5px; font-weight: bold; text-align: left; color:darkblue;">
+                        <span>Course Access and Handouts</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 12px;line-height: 18px; text-align: left;">
+                        <ul>
+                            <li>Access to the event and course handouts will be sent to your email inbox 24hrs before
+                                the event begins.
+                            </li>
+                            <li>Access to course and handouts can also be found, 24hrs before the event, by clicking on
+                                the <a href="https://cmeavenue.com/learner/dashboard">Learner Dashboard</a> button
+                                below.
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td
+                        style="font-size: 12px;line-height: 18px; font-weight: bold;margin-top: 8px;margin-bottom: 5px; text-align: left; color: darkblue">
+                        <span>Receive your Certificate of Completion</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 12px;line-height: 18px; text-align: left;">
+                        <ul>
+                            <li>CPE polling questions are included throughout the presentation, please make sure you
+                                answer these to receive your certificate of completion.
+                            </li>
+                            <li>If you're unable to answer the questions throughout the event, reply to this email.
+                            </li>
+                            <li>Your Certificate will be available in your <a
+                                    href="https://cmeavenue.com/learner/dashboard">Learner Dashboard</a> 24hrs after
+                                the event.
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td
+                        style="font-size: 12px;line-height: 18px;margin-top: 8px;margin-bottom: 8px; font-weight: bold; text-align: center;">
+                        <span>GROUP ENROLLMENT</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size: 12px;line-height: 18px; text-align: left;">
+                        <ul>
+                            <li>Each attendee must be enrolled in the course in order to receive certification of
+                                completion.
+                            </li>
+                            <li>If watching as a group, each individual must submit their own answers for the polling
+                                questions, you can write your answers down and submit them by email to:
+                                <a href="cpe@cmeavenue.com">cpe@cmeavenue.com</a>.
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- Learner Dashboard Button -->
+        <div style="
+  position: relative; 
+  border-radius: 15px;
+  border: 1px solid black;
+  width: 175px;
+  height: 34px;
+  background-color: #344A7E;
+  margin: 10px auto 10px auto;  /* center horizontally + space above footer */
+  display: flex;              
+  justify-content: center;  
+     
+  color: #D9D9D9;
+  font-size: 12px;
+">
+            <span style="padding-bottom: 12px; font-weight: 300;">Learner &nbsp;&nbsp;&nbsp;&nbsp; Dashboard</span>
+        </div>
+
+        <!-- Social Footer -->
+        <div style="position: relative; padding: 4px 0; bottom: 0px; background-color: #f3f4f3;">
+            <table style="width: 555px; font-family: Arial, sans-serif; border-collapse: collapse; margin: 0 auto;">
+                <tr style="color: black;">
+                    <td style="padding: 6px 5px; width: 150px;">
+                        <a href="https://www.linkedin.com/in/cme-avenue-682845325/"
+                            style="color: black; text-decoration: none; font-size: 10px; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 2px;">
+                            <img width="18" src="../../../../../assets/params/images/invoice_Template/linkedin_logo.png"
+                                alt="LinkedIn">
+                            CME Avenue
+                        </a>
+                    </td>
+                    <td style="padding: 6px 5px; width: 100px;">
+                        <a href="https://x.com/CMEAvenue2024"
+                            style="color: black; text-decoration: none; font-size: 10px; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 2px;">
+                            <img width="18" src="../../../../../assets/params/images/invoice_Template/twitter_logo.png"
+                                alt="Twitter">
+                            @CMEAvenue2024
+                        </a>
+                    </td>
+                    <td style="padding: 6px 5px; width: 155px;">
+                        <a href="https://www.facebook.com/profile.php?id=61564929272372"
+                            style="color: black; text-decoration: none; font-size: 10px; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 2px;">
+                            <img width="18" src="../../../../../assets/params/images/invoice_Template/facebook_logo.png"
+                                alt="Facebook">
+                            @cmeavenue
+                        </a>
+                    </td>
+                    <td style="padding: 6px 5px; width: 150px;">
+                        <a href="https://www.instagram.com/cmeavenue24"
+                            style="color: black; text-decoration: none; font-size: 10px; font-weight: bold; display: flex; flex-direction: column; align-items: center; gap: 2px;">
+                            <img width="18"
+                                src="../../../../../assets/params/images/invoice_Template/instagram_logo.png"
+                                alt="Instagram">
+                            @cmeavenue24
+                        </a>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="4"
+                        style="font-size: 9px; color: black; line-height: 14px; font-weight: 900; text-align: center; padding: 4px 0;">
+                        1717 Pennsylvania Ave NW Suite 1025 Washington, DC 20006<br>
+                        <span style="text-decoration: underline;">+1 437 291 1446</span><br>
+                        <a href="mailto:CPE@CMEAVENUE.COM"
+                            style="color: black; font-weight: bold;">CPE@CMEAVENUE.COM</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
