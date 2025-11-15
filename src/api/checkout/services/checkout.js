@@ -249,7 +249,6 @@ module.exports = {
               const updatedDiscountCouponEntry = await updateDiscountCoupon(uniqueCouponEntry[0].id, uniqueCouponEntry[0].noOfRedemption)
             }
 
-
             const emdata = await orderConfirmationMail(
               totalAmountPaid,
               paymentStatus,
@@ -641,6 +640,8 @@ async function orderConfirmationMail(
   URL
 ) {
   return new Promise(async (resolve, reject) => {
+    console.log(data);
+    
 
     try {
       let liveDefaultTemp = `<head>
@@ -951,6 +952,11 @@ async function orderConfirmationMail(
             console.log("isValidEmailTemplate", check);
             if (check) {
               orderConfHtml = html
+                .replace("{{invoiceNo}}", data.id)
+                .replace("{{invoiceDate}}", (new Date()).toLocaleDateString('en-GB'))
+                .replace("{{totalPrice}}", data.totalPrice)
+                .replace("{{discountPrice}}", data.discountPrice)
+                .replace("{{finalPrice}}", data.finalPrice)
                 .replace(
                   "{{CourseIterationStart}}",
                   "{{#each items }}"
@@ -964,6 +970,9 @@ async function orderConfirmationMail(
                   "{{this.imageUrl}}"
                 )
                 .replace("{{title}}", "{{this.title}}")
+                .replace("{{price}}", "{{this.price}}")
+                .replace("{{qty}}", "{{this.qty}}")
+                .replace("{{total}}", "{{this.finalPrice}}")
                 .replace("{{discountCode}}", "{{dCode}}")
                 .replace("{{courseIterationEnd}}", "{{/each}}")
                 .replace("{{dashboardUrl}}", "{{DashboardLink}}")
@@ -997,10 +1006,8 @@ async function orderConfirmationMail(
         let keyword = [
           "{{totalPrice}}",
           "{{CourseIterationStart}}",
-          "{{baseURL}}",
           "{{imageUrl}}",
           "{{title}}",
-          "{{discountCode}}",
           "{{courseIterationEnd}}",
           "{{dashboardUrl}}",
           "{{socialLinksIterationStart}}",
@@ -1036,6 +1043,12 @@ async function orderConfirmationMail(
 
       function sendTempEmail(orderConfHtml, subject) {
         try {
+          for (const item of items) {
+            item.imageUrl = URL + item.imageUrl
+
+            if(!item.price) item.price = 0
+            if(!item.finalPrice) item.finalPrice = 0
+          }
 
           let orderData = {
             items,
@@ -1049,9 +1062,7 @@ async function orderConfirmationMail(
             URL,
             DashboardLink,
           }
-
-          // console.log(orderEmail(orderConfHtml, orderData));
-
+          
           strapi.plugin("email").service("email").send({
             to: email,
             replyTo: EMAIL_REPLY_TO,

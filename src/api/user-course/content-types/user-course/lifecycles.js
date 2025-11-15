@@ -74,7 +74,7 @@ module.exports = {
           const registrant = await strapi
             .service("api::user-course.user-course")
             .createRegistraint(course.id, user);
-          console.log("----registrant-------   :     ", registrant);
+          // console.log("----registrant-------   :     ", registrant);
           if (registrant?.join_url) {
             data.joinUrl = registrant?.join_url;
             data.registrantKey = registrant?.registrant_id;

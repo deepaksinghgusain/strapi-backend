@@ -16,7 +16,7 @@ module.exports = createCoreService(
     //Generate Access Token with Username and password
     generateAccessToken: async (zoomAccount) => {
 
-      console.log("Selected Zoom Account:", zoomAccount);
+      // console.log("Selected Zoom Account:", zoomAccount);
 
       // Fetch global GTM data
       const gData = await strapi.db.query("api::global.global").findOne({
@@ -51,10 +51,10 @@ module.exports = createCoreService(
 
       try {
         const response = await axios(config);
-        console.log("Access Token Generated:", response.data.access_token);
+        // console.log("Access Token Generated:", response.data.access_token);
         return response.data.access_token;
       } catch (error) {
-        console.error("Error in generateAccessToken for account", zoomAccount, error.message);
+        // console.error("Error in generateAccessToken for account", zoomAccount, error.message);
         throw error; // Re-throw error for higher-level handling if necessary
       }
     },
