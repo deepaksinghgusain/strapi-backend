@@ -1006,7 +1006,6 @@ async function orderConfirmationMail(
         let keyword = [
           "{{totalPrice}}",
           "{{CourseIterationStart}}",
-          "{{imageUrl}}",
           "{{title}}",
           "{{courseIterationEnd}}",
           "{{dashboardUrl}}",

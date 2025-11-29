@@ -260,6 +260,18 @@ export interface BlocksRecommendationCard extends Schema.Component {
   };
 }
 
+export interface BlocksSocialNetwork extends Schema.Component {
+  collectionName: 'components_blocks_social_networks';
+  info: {
+    displayName: 'SocialNetwork';
+  };
+  attributes: {
+    iconImage: Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    Name: Attribute.String;
+    url: Attribute.String;
+  };
+}
+
 export interface BlocksStaticSection extends Schema.Component {
   collectionName: 'components_blocks_static_sections';
   info: {
@@ -817,6 +829,7 @@ declare module '@strapi/types' {
       'blocks.page-question-section': BlocksPageQuestionSection;
       'blocks.partner-section': BlocksPartnerSection;
       'blocks.recommendation-card': BlocksRecommendationCard;
+      'blocks.social-network': BlocksSocialNetwork;
       'blocks.static-section': BlocksStaticSection;
       'blocks.tab-with-button': BlocksTabWithButton;
       'blocks.testimonial': BlocksTestimonial;
