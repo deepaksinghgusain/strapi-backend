@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Certificate of Completion</title>
+
+  <style>
+    /* Page setup for FULL SIZE certificate (A4 Landscape) */
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f4f6f8;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* Full-size certificate container */
+    .certificate-wrapper {
+      width: 1123px; /* A4 landscape width */
+      height: 794px; /* A4 landscape height */
+      margin: 20px auto;
+      background: #ffffff;
+      position: relative;
+      padding: 15px;
+      box-sizing: border-box;
+    }
+
+    /* Decorative images */
+    .top-left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 180px;
+    }
+
+    .top-right {
+      position: absolute;
+      top: 22px;
+      right: 22px;
+      width: 50px;
+    }
+
+    .bottom-right {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 180px;
+    }
+
+    .bottom-left {
+      position: absolute;
+      bottom: 22px;
+      left: 22px;
+      width: 50px;
+    }
+
+    /* Border */
+    .certificate-border {
+      width: 100%;
+      height: 100%;
+      border: 2px solid #d9d9d9;
+      padding: 3px;
+      box-sizing: border-box;
+    }
+
+    .certificate {
+      width: 100%;
+      height: 100%;
+      border: 1px solid #d9d9d9;
+      text-align: center;
+      padding: 40px 30px 140px;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .logo {
+      width: 250px;
+      margin-bottom: 30px;
+    }
+
+    .title {
+      font-size: 34px;
+      color: #394c7b;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .subtitle {
+      font-size: 26px;
+      color: #303030;
+      margin-bottom: 12px;
+    }
+
+    .username {
+      font-size: 24px;
+      color: #20124d;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .text {
+      font-size: 22px;
+      color: #626262;
+      margin-bottom: 12px;
+    }
+
+    .course {
+      font-size: 22px;
+      color: #20124d;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    .date {
+      font-size: 16px;
+      color: #20124d;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .program {
+      font-size: 12px;
+      color: #20124d;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+
+    .medium {
+      font-size: 16px;
+      color: #424242;
+      margin-top: 30px;
+    }
+
+    /* Footer section */
+    .footer {
+      position: absolute;
+      bottom: 30px;
+      left: 0;
+      width: 100%;
+      height: 80px;
+    }
+
+    .address {
+      position: absolute;
+      left: 25%;
+      bottom: 0;
+      font-size: 10px;
+      color: #5e5757;
+      font-weight: bold;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    .signature {
+      position: absolute;
+      right: 20%;
+      bottom: -10px;
+    }
+
+    .signature img {
+      width: 125px;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .certificate-wrapper {
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="certificate-wrapper">
+
+    <img class="top-left" src="https://admin.cmeavenue.com/uploads/asset_1_1827c76543_608903d72b.png" alt="Decoration" />
+    <img class="top-right" src="https://admin.cmeavenue.com/uploads/top_right_icon_c3420fe802_25cea789d3.png" alt="Decoration" />
+
+    <div class="certificate-border">
+      <div class="certificate">
+
+        <img class="logo" src="https://admin.cmeavenue.com/uploads/CME_Avenue_26d26d4ecd.png" alt="CME Avenue" />
+
+        <div class="title">Certificate of Completion</div>
+        <div class="subtitle">Presented to</div>
+        <div class="username">{{username}}</div>
+        <div class="text">has completed</div>
+        <div class="course">{{course}}</div>
+        <div class="date">{{completedOn}}</div>
+        <div class="program">{{program}}</div>
+
+        <div class="medium">{{medium}}</div>
+
+        <div class="footer">
+          <div class="address">
+            20 F Street NW Suite 700<br />
+            Washington DC, 20001 USA
+          </div>
+
+          <div class="signature">
+            <img src="https://admin.cmeavenue.com/uploads/debashish_logo_ee1f166410_49850eb68c.png" alt="Signature" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <img class="bottom-right" src="https://admin.cmeavenue.com/uploads/asset_2_3672edd038_61f286d134.png" alt="Decoration" />
+    <img class="bottom-left" src="https://admin.cmeavenue.com/uploads/right_bottom_icon_947ac7053e_4603354788.png" alt="Decoration" />
+
+  </div>
+
+</body>
+</html>
